@@ -52,7 +52,7 @@ export default class ConfirmationCodeInput extends Component {
       console.error("Invalid props: compareWith length is not equal to codeLength");
     }
     
-    if (_.indexOf(['center', 'left', 'right', 'full'], inputPosition) === -1) {
+    if (_.indexOf(['center', 'left', 'right', 'full-width'], inputPosition) === -1) {
       console.error('Invalid input position. Must be in: center, left, right, full');
     }
   }

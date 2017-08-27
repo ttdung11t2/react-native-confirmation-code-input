@@ -5,7 +5,7 @@ A react-native confirmation code input for both IOS and Android
 - A user-friendly component for inputting confirmation code
 - Extended from [<TextInput/>](https://facebook.github.io/react-native/docs/textinput.html) component, so you can use its props
 - Built-in type of code input: underline, box, circle
-- Set position: center, left, right, fill width
+- Set position: center, left, right, full width
 - Set size and active color, inactive color
 - Easy to customize style, use base style from TextInput component
 - Check code on finish or return code for async checking
@@ -74,16 +74,14 @@ render() {
 }
 ```
 
-### Customization
-
-### Properties
+### props
 This component uses the same props as [<TextInput/>](https://facebook.github.io/react-native/docs/textinput.html). Below are additional props for this component:  
 
 Prop       | Type    | Default    | Description
 ---------- | ------- | ---------- | -----------------------
 `codeLength`        | number   | 5            | length of confirmation code -> number of cells
 `compareWithCode`   | string   |              | code to compare. if null, onFulfill callback return inputted code to check later
-`inputPosition`     | string   | `center`     | position of code input in its container
+`inputPosition`     | string   | `center`     | position of code input in its container: `left`, `right`, `center`, `full-width`
 `size`              | number   | 40           | size of input cells
 `space`             | number   | 8            | space between 2 cells
 `className`         | string   | `border-box` | Some built-in classname: `border-box`, `border-circle`, `border-b`, `border-b-t`, `border-l-r`
@@ -96,9 +94,24 @@ Prop       | Type    | Default    | Description
 `containerStyle`    | style object   |        | custom style for code input container
 `onFulfill`         | function |              | callback function called when fulfilling code. If `compareWithCode` is null -> return `(code)` in callback, else return `(isValid, code)`. **Required**
 
+## functions
+clear input:
+```javascript
+this.refs.refName.clear();
+...
+<CodeInput 
+    ...
+    ref="refName"
+/>
+```
 ## Example
 See [EXAMPLE](example)
-
+```sh
+git clone https://github.com/ttdung11t2/react-native-confirmation-code-input.git
+cd react-native-confirmation-code-input/example
+npm install
+react-native run-ios / react-native run-android
+```
 ## License
 
 react-native-confirmation-code-input is released under the MIT license. See [LICENSE](LICENSE) for details.  
