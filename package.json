@@ -1,0 +1,28 @@
+{
+  "name": "react-native-confirmation-code-input",
+  "version": "1.0.0",
+  "description": "A react-native component to input confirmation code for both Android and IOS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "react-native",
+    "react-native-component",
+    "android",
+    "ios",
+    "code-input",
+    "confirmation-code",
+    "pin-code",
+    "confirmation-code-input",
+    "pin-code-input"
+  ],
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.10"
+  },
+  "author": "Dung Tran <ttdung001@gmail.com>",
+  "license": "MIT"
+}
