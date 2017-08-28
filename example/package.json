@@ -1,5 +1,5 @@
 {
-	"name": "example",
+	"name": "react-native-confirmation-code-input-demo",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -11,7 +11,8 @@
 		"lodash": "^4.17.4",
 		"prop-types": "^15.5.10",
 		"react": "16.0.0-alpha.12",
-		"react-native": "0.47.2"
+		"react-native": "0.47.2",
+		"react-native-confirmation-code-input": "^1.0.0"
 	},
 	"devDependencies": {
 		"babel-jest": "20.0.3",
@@ -20,5 +21,8 @@
 	},
 	"jest": {
 		"preset": "react-native"
-	}
+	},
+	"homepage": "https://github.com/ttdung11t2/react-native-confirmation-code-input.git",
+	"author": "Dung Tran <ttdung001@gmail.com>",
+	"license": "MIT"
 }

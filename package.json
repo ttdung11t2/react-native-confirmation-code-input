@@ -23,6 +23,15 @@
     "lodash": "^4.17.4",
     "prop-types": "^15.5.10"
   },
+  "homepage": "https://github.com/ttdung11t2/react-native-confirmation-code-input.git",
+  "bugs": {
+    "url": "https://github.com/ttdung11t2/react-native-confirmation-code-input.git/issues",
+    "email": "ttdung001@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ttdung11t2/react-native-confirmation-code-input.git"
+  },
   "author": "Dung Tran <ttdung001@gmail.com>",
   "license": "MIT"
 }
