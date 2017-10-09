@@ -20,7 +20,7 @@ export default class ConfirmationCodeInput extends Component {
     ignoreCase: PropTypes.bool,
     autoFocus: PropTypes.bool,
     codeInputStyle: TextInput.propTypes.style,
-    containerStyle: ViewPropTypes.style,
+    containerStyle: viewPropTypes.style,
     onFulfill: PropTypes.func,
   };
   
