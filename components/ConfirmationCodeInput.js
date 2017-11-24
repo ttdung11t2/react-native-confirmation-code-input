@@ -21,7 +21,9 @@ export default class ConfirmationCodeInput extends Component {
     autoFocus: PropTypes.bool,
     codeInputStyle: TextInput.propTypes.style,
     containerStyle: viewPropTypes.style,
-    onFulfill: PropTypes.func,
+    onFulfill: PropTypes.func.isRequired,
+    onUnfulfill: PropTypes.func,
+    filterInput: PropTypes.func
   };
   
   static defaultProps = {
@@ -43,7 +45,8 @@ export default class ConfirmationCodeInput extends Component {
     
     this.state = {
       codeArr: new Array(this.props.codeLength).fill(''),
-      currentIndex: 0
+      currentIndex: 0,
+      isFulfilled: false
     };
     
     this.codeInputRefs = [];
@@ -61,11 +64,22 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   clear() {
-    this.setState({
-      codeArr: new Array(this.props.codeLength).fill(''),
-      currentIndex: 0
-    });
+    this._updateState(new Array(this.props.codeLength).fill(''), 0);
     this._setFocus(0);
+  }
+
+  _updateState(codeArr, currentIndex) {
+    const {codeLength} = this.props;
+    const code = codeArr.join('');
+    const isFulfilled = code.length === codeLength;
+
+    this._fulfill(code, isFulfilled);
+
+    this.setState({
+      codeArr,
+      currentIndex,
+      isFulfilled
+    });
   }
   
   _setFocus(index) {
@@ -77,28 +91,21 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   _onFocus(index) {
-    let newCodeArr = _.clone(this.state.codeArr);
-    const currentEmptyIndex = _.findIndex(newCodeArr, c => !c);
+    const {codeArr} = this.state;
+    const currentEmptyIndex = _.findIndex(codeArr, c => !c);
     if (currentEmptyIndex !== -1 && currentEmptyIndex < index) {
       return this._setFocus(currentEmptyIndex);
     }
-    for (const i in newCodeArr) {
-      if (i >= index) {
-        newCodeArr[i] = '';
-      }
-    }
+    const newCodeArr = codeArr.map((val, i) => (i >= index ? '' : val));
     
-    this.setState({
-      codeArr: newCodeArr,
-      currentIndex: index
-    })
+    this._updateState(newCodeArr, index);
   }
   
   _isMatchingCode(code, compareWithCode, ignoreCase = false) {
     if (ignoreCase) {
-      return code.toLowerCase() == compareWithCode.toLowerCase();
+      return code.toLowerCase() === compareWithCode.toLowerCase();
     }
-    return code == compareWithCode;
+    return code === compareWithCode;
   }
   
   _getContainerStyle(size, position) {
@@ -200,15 +207,16 @@ export default class ConfirmationCodeInput extends Component {
       this._setFocus(nextIndex);
     }
   }
-  
-  _onInputCode(character, index) {
-    const { codeLength, onFulfill, compareWithCode, ignoreCase } = this.props;
-    let newCodeArr = _.clone(this.state.codeArr);
-    newCodeArr[index] = character;
-    
-    if (index == codeLength - 1) {
-      const code = newCodeArr.join('');
-      
+
+  _fulfill(code, fulfilled) {
+      const {isFulfilled} = this.state;
+    const { onFulfill, onUnfulfill, compareWithCode } = this.props;
+    if (isFulfilled === fulfilled) {
+      // no change, do nothing
+      return;
+    }
+
+    if (fulfilled) {
       if (compareWithCode) {
         const isMatching = this._isMatchingCode(code, compareWithCode, ignoreCase);
         onFulfill(isMatching, code);
@@ -216,17 +224,35 @@ export default class ConfirmationCodeInput extends Component {
       } else {
         onFulfill(code);
       }
+    } else if (onUnfulfill) {
+      onUnfulfill(code);
+    }
+  }
+  
+  _onInputCode(text, index) {
+    const {codeLength, filterInput} = this.props;
+    const {codeArr} = this.state;
+
+    if (filterInput) {
+      text = filterInput(text);
+    }
+
+    const charArray = text.split('');
+    let newCodeArr = [...codeArr];
+    newCodeArr[index] = text;
+
+    while (index < codeLength && charArray.length > 0) {
+      newCodeArr[index++] = charArray.shift();
+    }
+
+    const fulfilled = index === codeLength;
+    if (fulfilled) {
       this._blur(this.state.currentIndex);
     } else {
-      this._setFocus(this.state.currentIndex + 1);
+      this._setFocus(index);
     }
-    
-    this.setState(prevState => {
-      return {
-        codeArr: newCodeArr,
-        currentIndex: prevState.currentIndex + 1
-      };
-    });
+
+    this._updateState(newCodeArr, index);
   }
   
   render() {
@@ -240,6 +266,8 @@ export default class ConfirmationCodeInput extends Component {
       size,
       activeColor
     } = this.props;
+
+    const {currentIndex, codeArr} = this.state;
     
     const initialCodeInputStyle = {
       width: size,
@@ -256,7 +284,7 @@ export default class ConfirmationCodeInput extends Component {
           style={[
             styles.codeInput, 
             initialCodeInputStyle, 
-            this._getClassStyle(className, this.state.currentIndex == id),
+            this._getClassStyle(className, currentIndex === id),
             codeInputStyle
           ]}
           underlineColorAndroid="transparent"
@@ -264,12 +292,11 @@ export default class ConfirmationCodeInput extends Component {
           keyboardType={'name-phone-pad'}
           returnKeyType={'done'}
           {...this.props}
-          autoFocus={autoFocus && id == 0}
+          autoFocus={autoFocus && id === 0}
           onFocus={() => this._onFocus(id)}
-          value={this.state.codeArr[id] ? this.state.codeArr[id].toString() : ''}
+          value={codeArr[id] ? codeArr[id].toString() : ''}
           onChangeText={text => this._onInputCode(text, id)}
           onKeyPress={(e) => this._onKeyPress(e)}
-          maxLength={1}
         />
       )
     }
