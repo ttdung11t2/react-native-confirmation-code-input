@@ -77,16 +77,12 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   _onFocus(index) {
-    let newCodeArr = _.clone(this.state.codeArr);
-    const currentEmptyIndex = _.findIndex(newCodeArr, c => !c);
+    const {codeArr} = this.state;
+    const currentEmptyIndex = _.findIndex(codeArr, c => !c);
     if (currentEmptyIndex !== -1 && currentEmptyIndex < index) {
       return this._setFocus(currentEmptyIndex);
     }
-    for (const i in newCodeArr) {
-      if (i >= index) {
-        newCodeArr[i] = '';
-      }
-    }
+    const newCodeArr = codeArr.map((val, i) => (i >= index ? '' : val));
     
     this.setState({
       codeArr: newCodeArr,
