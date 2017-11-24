@@ -96,9 +96,9 @@ export default class ConfirmationCodeInput extends Component {
   
   _isMatchingCode(code, compareWithCode, ignoreCase = false) {
     if (ignoreCase) {
-      return code.toLowerCase() == compareWithCode.toLowerCase();
+      return code.toLowerCase() === compareWithCode.toLowerCase();
     }
-    return code == compareWithCode;
+    return code === compareWithCode;
   }
   
   _getContainerStyle(size, position) {
@@ -206,7 +206,7 @@ export default class ConfirmationCodeInput extends Component {
     let newCodeArr = _.clone(this.state.codeArr);
     newCodeArr[index] = character;
     
-    if (index == codeLength - 1) {
+    if (index === codeLength - 1) {
       const code = newCodeArr.join('');
       
       if (compareWithCode) {
@@ -256,7 +256,7 @@ export default class ConfirmationCodeInput extends Component {
           style={[
             styles.codeInput, 
             initialCodeInputStyle, 
-            this._getClassStyle(className, this.state.currentIndex == id),
+            this._getClassStyle(className, this.state.currentIndex === id),
             codeInputStyle
           ]}
           underlineColorAndroid="transparent"
@@ -264,7 +264,7 @@ export default class ConfirmationCodeInput extends Component {
           keyboardType={'name-phone-pad'}
           returnKeyType={'done'}
           {...this.props}
-          autoFocus={autoFocus && id == 0}
+          autoFocus={autoFocus && id === 0}
           onFocus={() => this._onFocus(id)}
           value={this.state.codeArr[id] ? this.state.codeArr[id].toString() : ''}
           onChangeText={text => this._onInputCode(text, id)}
