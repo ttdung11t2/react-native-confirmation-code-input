@@ -70,9 +70,10 @@ export default class ConfirmationCodeInput extends Component {
 
   _updateState(codeArr, currentIndex) {
     const {codeLength} = this.props;
-    const isFulfilled = codeArr.length === codeLength;
+    const code = codeArr.join('');
+    const isFulfilled = code.length === codeLength;
 
-    this._fulfill(codeArr.join(''), isFulfilled);
+    this._fulfill(code, isFulfilled);
 
     this.setState({
       codeArr,
