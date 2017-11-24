@@ -241,16 +241,14 @@ export default class ConfirmationCodeInput extends Component {
     if (fulfilled) {
       this._blur(this.state.currentIndex);
     } else {
-      this._setFocus(this.state.currentIndex + 1);
+      this._setFocus(index);
     }
 
     this._fulfill(newCodeArr.join(''), fulfilled);
-    this.setState(prevState => {
-      return {
+    this.setState({
         codeArr: newCodeArr,
-        currentIndex: prevState.currentIndex + 1,
+        currentIndex: index,
         isFulfilled: fulfilled
-      };
     });
   }
   
