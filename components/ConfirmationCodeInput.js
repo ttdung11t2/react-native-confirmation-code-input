@@ -219,10 +219,6 @@ export default class ConfirmationCodeInput extends Component {
     } else if (onUnfulfill) {
       onUnfulfill(code);
     }
-
-    this.setState({
-      ...state
-    })
   }
   
   _onInputCode(text, index) {
