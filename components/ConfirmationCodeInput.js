@@ -21,7 +21,7 @@ export default class ConfirmationCodeInput extends Component {
     autoFocus: PropTypes.bool,
     codeInputStyle: TextInput.propTypes.style,
     containerStyle: viewPropTypes.style,
-    onFulfill: PropTypes.func,
+    onFulfill: PropTypes.func.isRequired,
     onUnfulfill: PropTypes.func,
     filterInput: PropTypes.func
   };
@@ -216,7 +216,7 @@ export default class ConfirmationCodeInput extends Component {
       } else {
         onFulfill(code);
       }
-    } else {
+    } else if (onUnfulfill) {
       onUnfulfill(code);
     }
 
