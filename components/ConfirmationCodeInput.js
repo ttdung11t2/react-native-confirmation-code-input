@@ -64,11 +64,21 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   clear() {
-    this.setState({
-      codeArr: new Array(this.props.codeLength).fill(''),
-      currentIndex: 0
-    });
+    this._updateState(new Array(this.props.codeLength).fill(''), 0);
     this._setFocus(0);
+  }
+
+  _updateState(codeArr, currentIndex) {
+    const {codeLength} = this.props;
+    const isFulfilled = codeArr.length === codeLength;
+
+    this._fulfill(codeArr.join(''), isFulfilled);
+
+    this.setState({
+      codeArr,
+      currentIndex,
+      isFulfilled
+    });
   }
   
   _setFocus(index) {
@@ -87,10 +97,7 @@ export default class ConfirmationCodeInput extends Component {
     }
     const newCodeArr = codeArr.map((val, i) => (i >= index ? '' : val));
     
-    this.setState({
-      codeArr: newCodeArr,
-      currentIndex: index
-    })
+    this._updateState(newCodeArr, index);
   }
   
   _isMatchingCode(code, compareWithCode, ignoreCase = false) {
@@ -244,12 +251,7 @@ export default class ConfirmationCodeInput extends Component {
       this._setFocus(index);
     }
 
-    this._fulfill(newCodeArr.join(''), fulfilled);
-    this.setState({
-        codeArr: newCodeArr,
-        currentIndex: index,
-        isFulfilled: fulfilled
-    });
+    this._updateState(newCodeArr, index);
   }
   
   render() {
