@@ -202,6 +202,10 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   _onInputCode(character, index) {
+    if (index < this.props.codeLength - 1) {
+      this._setFocus(this.state.currentIndex + 1);
+    }
+
     const { codeLength, onFulfill, compareWithCode, ignoreCase } = this.props;
     let newCodeArr = _.clone(this.state.codeArr);
     newCodeArr[index] = character;
@@ -217,8 +221,6 @@ export default class ConfirmationCodeInput extends Component {
         onFulfill(code);
       }
       this._blur(this.state.currentIndex);
-    } else {
-      this._setFocus(this.state.currentIndex + 1);
     }
     
     this.setState(prevState => {
