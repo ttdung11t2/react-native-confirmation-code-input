@@ -244,7 +244,6 @@ export default class ConfirmationCodeInput extends Component {
       activeColor,
       filledColor
     } = this.props;
-    console.log(filledColor)
     
     const initialCodeInputStyle = {
       width: size,
