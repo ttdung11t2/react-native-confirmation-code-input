@@ -17,6 +17,7 @@ export default class ConfirmationCodeInput extends Component {
     cellBorderWidth: PropTypes.number,
     activeColor: PropTypes.string,
     inactiveColor: PropTypes.string,
+    filledColor: PropTypes.string,
     ignoreCase: PropTypes.bool,
     autoFocus: PropTypes.bool,
     codeInputStyle: TextInput.propTypes.style,
@@ -33,6 +34,7 @@ export default class ConfirmationCodeInput extends Component {
     cellBorderWidth: 1,
     activeColor: 'rgba(255, 255, 255, 1)',
     inactiveColor: 'rgba(255, 255, 255, 0.2)',
+    filledColor: 'rgba(255, 255, 255, 1)',
     space: 8,
     compareWithCode: '',
     ignoreCase: false
@@ -151,7 +153,7 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   _getClassStyle(className, active) {
-    const { cellBorderWidth, activeColor, inactiveColor, space } = this.props;
+    const { cellBorderWidth, activeColor, inactiveColor, filledColor, space } = this.props;
     let classStyle = {
       ...this._getInputSpaceStyle(space),
       color: activeColor
@@ -230,6 +232,7 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   render() {
+
     const {
       codeLength,
       codeInputStyle,
@@ -238,8 +241,10 @@ export default class ConfirmationCodeInput extends Component {
       autoFocus,
       className,
       size,
-      activeColor
+      activeColor,
+      filledColor
     } = this.props;
+    console.log(filledColor)
     
     const initialCodeInputStyle = {
       width: size,
@@ -257,7 +262,8 @@ export default class ConfirmationCodeInput extends Component {
             styles.codeInput, 
             initialCodeInputStyle, 
             this._getClassStyle(className, this.state.currentIndex == id),
-            codeInputStyle
+            codeInputStyle,
+            this.state.codeArr[id].length > 0 ? {borderColor: filledColor} : null
           ]}
           underlineColorAndroid="transparent"
           selectionColor={activeColor}
