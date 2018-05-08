@@ -44,7 +44,7 @@ render() {
       inputPosition='left'
       onFulfill={(code) => this._onFulfill(code)}
     />
-    
+
     <CodeInput
       ref="codeInputRef2"
       secureTextEntry
@@ -59,7 +59,7 @@ render() {
       containerStyle={{ marginTop: 30 }}
       codeInputStyle={{ borderWidth: 1.5 }}
     />
-    
+
     <CodeInput
       ref="codeInputRef2"
       keyboardType="numeric"
@@ -92,6 +92,7 @@ Prop       | Type    | Default    | Description
 `autoFocus`         | boolean  | `true`       | auto focus on code input
 `codeInputStyle`    | style object   |        | custom style for code input
 `containerStyle`    | style object   |        | custom style for code input container
+`getCurrentCode`    | function   |        | callback function called when change focus and return current code.
 `onFulfill`         | function |              | callback function called when fulfilling code. If `compareWithCode` is null -> return `(code)` in callback, else return `(isValid, code)`. **Required**
 
 ## functions
@@ -99,7 +100,7 @@ clear input:
 ```javascript
 this.refs.refName.clear();
 ...
-<CodeInput 
+<CodeInput
     ...
     ref="refName"
 />
@@ -115,5 +116,5 @@ react-native run-ios / react-native run-android
 ## License
 
 react-native-confirmation-code-input is released under the MIT license. See [LICENSE](LICENSE) for details.  
-  
+
 Any question or support will welcome.
