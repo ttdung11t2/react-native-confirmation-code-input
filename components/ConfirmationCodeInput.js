@@ -195,9 +195,24 @@ export default class ConfirmationCodeInput extends Component {
   
   _onKeyPress(e) {
     if (e.nativeEvent.key === 'Backspace') {
+      /**
+       * Due to a bug in RN iOS TextInput implementation, an unwanted backspace
+       * event is fired on key press after clearing out the text input.
+       * Typically this backspace event follows the actual event
+       * and the time duration is under 10ms.
+       * Added a check to see if we receive a backspace event under ~20ms
+       * after the last key press event. If found, do nothing.
+       *
+       * Bug link: https://github.com/facebook/react-native/issues/18374
+       */
+      if (Math.abs(this.lastKeyEventTimestamp - e.timeStamp) < 20) return;
+
       const { currentIndex } = this.state;
       const nextIndex = currentIndex > 0 ? currentIndex - 1 : 0;
       this._setFocus(nextIndex);
+    } else {
+      // Record non-backspace key event time stamp
+      this.lastKeyEventTimestamp = e.timeStamp;
     }
   }
   
