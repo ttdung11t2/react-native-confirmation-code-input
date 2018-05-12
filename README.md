@@ -90,8 +90,10 @@ Prop       | Type    | Default    | Description
 `inactiveColor`     | string   | `rgba(255, 255, 255, 0.2)` | color of cells when inactive
 `ignoreCase`        | boolean  | `false`      | ignore case when checking code
 `autoFocus`         | boolean  | `true`       | auto focus on code input
+`defaultCode`       | string   |              | initial value for code inputs. Set `autoFocus` to `false` when using `defaultCode`
 `codeInputStyle`    | style object   |        | custom style for code input
 `containerStyle`    | style object   |        | custom style for code input container
+`onChangeCode`      | function |              | callback function called when any of the input value is changed. Always returns last `(code)` in callback.
 `onFulfill`         | function |              | callback function called when fulfilling code. If `compareWithCode` is null -> return `(code)` in callback, else return `(isValid, code)`. **Required**
 
 ## functions
