@@ -240,7 +240,7 @@ export default class ConfirmationCodeInput extends Component {
     for (
       let i = baseIndex, j = 0;
       i < codeLength && j < characters.length;
-      i++, j++
+      i++ , j++
     ) {
       newCodeArr[i] = characters[j];
     }
