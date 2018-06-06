@@ -7,7 +7,10 @@ import {
   Dimensions,
   ViewPropTypes,
 } from 'react-native';
-import _ from 'lodash';
+import clone from 'lodash.clone';
+import findIndex from 'lodash.findindex';
+import indexOf from 'lodash.indexof';
+import merge from 'lodash.merge';
 
 // if ViewPropTypes is not defined fall back to View.propType (to support RN < 0.44)
 const viewPropTypes = ViewPropTypes || View.propTypes;
@@ -64,7 +67,7 @@ export default class ConfirmationCodeInput extends Component {
     }
 
     if (
-      _.indexOf(['center', 'left', 'right', 'full-width'], inputPosition) === -1
+      indexOf(['center', 'left', 'right', 'full-width'], inputPosition) === -1
     ) {
       console.error(
         'Invalid input position. Must be in: center, left, right, full'
@@ -89,8 +92,8 @@ export default class ConfirmationCodeInput extends Component {
   }
 
   _onFocus(index) {
-    let newCodeArr = _.clone(this.state.codeArr);
-    const currentEmptyIndex = _.findIndex(newCodeArr, c => !c);
+    let newCodeArr = clone(this.state.codeArr);
+    const currentEmptyIndex = findIndex(newCodeArr, c => !c);
     if (currentEmptyIndex !== -1 && currentEmptyIndex < index) {
       return this._setFocus(currentEmptyIndex);
     }
@@ -171,31 +174,31 @@ export default class ConfirmationCodeInput extends Component {
 
     switch (className) {
       case 'clear':
-        return _.merge(classStyle, { borderWidth: 0 });
+        return merge(classStyle, { borderWidth: 0 });
       case 'border-box':
-        return _.merge(classStyle, {
+        return merge(classStyle, {
           borderWidth: cellBorderWidth,
           borderColor: active ? activeColor : inactiveColor,
         });
       case 'border-circle':
-        return _.merge(classStyle, {
+        return merge(classStyle, {
           borderWidth: cellBorderWidth,
           borderRadius: 50,
           borderColor: active ? activeColor : inactiveColor,
         });
       case 'border-b':
-        return _.merge(classStyle, {
+        return merge(classStyle, {
           borderBottomWidth: cellBorderWidth,
           borderColor: active ? activeColor : inactiveColor,
         });
       case 'border-b-t':
-        return _.merge(classStyle, {
+        return merge(classStyle, {
           borderTopWidth: cellBorderWidth,
           borderBottomWidth: cellBorderWidth,
           borderColor: active ? activeColor : inactiveColor,
         });
       case 'border-l-r':
-        return _.merge(classStyle, {
+        return merge(classStyle, {
           borderLeftWidth: cellBorderWidth,
           borderRightWidth: cellBorderWidth,
           borderColor: active ? activeColor : inactiveColor,
@@ -236,7 +239,7 @@ export default class ConfirmationCodeInput extends Component {
       codeLength - baseIndex
     );
 
-    let newCodeArr = _.clone(this.state.codeArr);
+    let newCodeArr = clone(this.state.codeArr);
     for (
       let i = baseIndex, j = 0;
       i < codeLength && j < characters.length;
