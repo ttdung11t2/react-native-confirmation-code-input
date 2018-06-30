@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet, Dimensions } from 'react-native';
+import { View, TextInput, StyleSheet, Dimensions, ViewPropTypes } from 'react-native';
 import _ from 'lodash';
+
+// if ViewPropTypes is not defined fall back to View.propType (to support RN < 0.44)
+const viewPropTypes = ViewPropTypes || View.propTypes;
 
 export default class ConfirmationCodeInput extends Component {
   static propTypes = {
@@ -17,8 +20,10 @@ export default class ConfirmationCodeInput extends Component {
     ignoreCase: PropTypes.bool,
     autoFocus: PropTypes.bool,
     codeInputStyle: TextInput.propTypes.style,
-    containerStyle: View.propTypes.style,
+    containerStyle: viewPropTypes.style,
     onFulfill: PropTypes.func,
+    onChangeCode: PropTypes.func,
+    defaultCode: PropTypes.string,
   };
   
   static defaultProps = {
@@ -32,7 +37,8 @@ export default class ConfirmationCodeInput extends Component {
     inactiveColor: 'rgba(255, 255, 255, 0.2)',
     space: 8,
     compareWithCode: '',
-    ignoreCase: false
+    ignoreCase: false,
+    defaultCode: '',
   };
   
   constructor(props) {
@@ -47,13 +53,22 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   componentDidMount() {
-    const { compareWithCode, codeLength, inputPosition } = this.props;
+    const { compareWithCode, codeLength, inputPosition, defaultCode } = this.props;
     if (compareWithCode && compareWithCode.length !== codeLength) {
       console.error("Invalid props: compareWith length is not equal to codeLength");
     }
     
     if (_.indexOf(['center', 'left', 'right', 'full-width'], inputPosition) === -1) {
       console.error('Invalid input position. Must be in: center, left, right, full');
+    }
+
+    if (defaultCode && defaultCode.length !== codeLength) {
+      console.error("Invalid props: defaultCode length is not equal to codeLength");
+    }
+    else {
+      this.setState({
+        codeArr: _.split(defaultCode, '')
+      });
     }
   }
   
@@ -74,6 +89,8 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   _onFocus(index) {
+    const { onChangeCode } = this.props;
+
     let newCodeArr = _.clone(this.state.codeArr);
     const currentEmptyIndex = _.findIndex(newCodeArr, c => !c);
     if (currentEmptyIndex !== -1 && currentEmptyIndex < index) {
@@ -83,6 +100,10 @@ export default class ConfirmationCodeInput extends Component {
       if (i >= index) {
         newCodeArr[i] = '';
       }
+    }
+
+    if (onChangeCode) {
+      onChangeCode(newCodeArr.join(''));
     }
     
     this.setState({
@@ -199,7 +220,7 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   _onInputCode(character, index) {
-    const { codeLength, onFulfill, compareWithCode, ignoreCase } = this.props;
+    const { codeLength, onFulfill, compareWithCode, ignoreCase, onChangeCode } = this.props;
     let newCodeArr = _.clone(this.state.codeArr);
     newCodeArr[index] = character;
     
@@ -214,6 +235,11 @@ export default class ConfirmationCodeInput extends Component {
         onFulfill(code);
       }
       this._blur(this.state.currentIndex);
+
+      if (onChangeCode) {
+        onChangeCode(code);
+      }
+
     } else {
       this._setFocus(this.state.currentIndex + 1);
     }
