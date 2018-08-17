@@ -65,6 +65,3 @@ typings/
 
 # OSX
 .DS_Store
-
-# Editors
-.vscode
