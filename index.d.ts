@@ -8,6 +8,7 @@ declare module "react-native-confirmation-code-input" {
 
     interface CodeInputProps extends ReactNative.TextInputProperties {
         codeLength?: number;
+        keyboardType?: ReactNative.KeyboardType;
         compareWithCode?: string;
         inputPosition?: InputPositions;
         size?: number;

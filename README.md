@@ -80,6 +80,7 @@ This component uses the same props as [<TextInput/>](https://facebook.github.io/
 Prop       | Type    | Default    | Description
 ---------- | ------- | ---------- | -----------------------
 `codeLength`        | number   | 5            | length of confirmation code -> number of cells
+`keyboardType`      | string   | `default`    | determines which keyboard to open
 `compareWithCode`   | string   |              | code to compare. if null, onFulfill callback return inputted code to check later
 `inputPosition`     | string   | `center`     | position of code input in its container: `left`, `right`, `center`, `full-width`
 `size`              | number   | 40           | size of input cells
