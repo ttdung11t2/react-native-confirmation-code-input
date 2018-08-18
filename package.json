@@ -1,9 +1,12 @@
 {
   "name": "react-native-confirmation-code-field",
-  "version": "2.0.0",
-  "main": "index.js",
+  "version": "1.0.0",
+  "main": "src/components/ConfirmationCodeInput/index.js",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "flow": "flow",
+    "lint": "eslint src ./*.js",
+    "ci": "npm run test & npm run flow & npm run lint"
   },
   "files": [
     "src",
@@ -15,16 +18,33 @@
     "react-native": "^0.55.0"
   },
   "devDependencies": {
+    "@exeto/eslint-config": "^2.0.0",
+    "@exeto/eslint-config-react": "^3.0.0",
     "@types/react": "^16.4.11",
     "@types/react-native": "^0.56.9",
+    "babel-eslint": "^8.2.6",
     "enzyme": "^3.4.3",
     "enzyme-adapter-react-16": "^1.2.0",
-    "flow-bin": "^0.79.0",
+    "eslint": "^5.4.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.11.1",
+    "flow-bin": "0.75.0",
+    "husky": "^0.14.3",
     "jest": "^23.5.0",
+    "lint-staged": "^7.2.2",
+    "prettier": "^1.14.2",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-native": "^0.56.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run ci"
+    }
   },
   "description": "A react-native component to input confirmation code for both Android and IOS",
   "repository": "git@github.com:retyui/react-native-confirmation-code-input.git",

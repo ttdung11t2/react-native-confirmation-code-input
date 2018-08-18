@@ -12,6 +12,7 @@ import type { SyntheticEvent } from 'react-native/Libraries/Types/CoreEventTypes
 import type { VariantNames, INDEX } from '../../types';
 import type { Props, State } from './types';
 
+// eslint-disable-next-line
 type DP = typeof ConfirmationCodeInput.defaultProps;
 
 const getDefaultCodeSymbols: number => Array<string> = codeLength =>
@@ -44,6 +45,7 @@ export default class ConfirmationCodeInput extends Component<
 
   onChangeCb = () => {
     const { onChangeCode } = this.props;
+
     if (onChangeCode) {
       onChangeCode(this.state.codeSymbols.join(''));
     }
@@ -225,7 +227,7 @@ export default class ConfirmationCodeInput extends Component<
           this.initialCodeInputStyle,
           this.getClassStyle(variant, currentIndex === index),
           getCodeInputStyle
-            ? getCodeInputStyle(index, currentIndex === index, !!value)
+            ? getCodeInputStyle(index, currentIndex === index, Boolean(value))
             : null,
         ]}
         maxLength={1}

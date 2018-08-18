@@ -68,7 +68,11 @@ export const getClassStyle = (
         borderColor,
       };
     case 'border-b':
-      return { ...classStyle, borderBottomWidth: cellBorderWidth, borderColor };
+      return {
+        ...classStyle,
+        borderBottomWidth: cellBorderWidth,
+        borderColor,
+      };
     case 'border-b-t':
       return {
         ...classStyle,
@@ -84,7 +88,9 @@ export const getClassStyle = (
         borderColor,
       };
     default:
+      // eslint-disable-next-line
       (variant: empty);
+
       return null;
   }
 };

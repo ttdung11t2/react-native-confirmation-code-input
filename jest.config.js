@@ -1,18 +1,16 @@
+'use strict';
+
 module.exports = {
   preset: 'react-native',
   setupTestFrameworkScriptFile: '<rootDir>.setup-tests.js',
   coverageThreshold: {
     global: {
-      branches: 90,
-      functions: 90,
-      statements: 90,
+      branches: 100,
+      functions: 100,
+      statements: 100,
     },
   },
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/.setup-tests.js',
-    '(.*)/styles.js',
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/', '/.setup-tests.js'],
   transform: {
     '^.+\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js',
   },
