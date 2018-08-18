@@ -1,4 +1,3 @@
-// @flow
 import React, { Component, createRef } from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
 
@@ -81,7 +80,7 @@ export default class ExampleApp extends Component {
             <CodeInput
               autoFocus={false}
               compareWithCode="AsDW2"
-              ignoreCase
+              whenCompareIgnoreCase
               activeColor="rgba(49, 180, 4, 1)"
               inactiveColor="rgba(49, 180, 4, 1.3)"
               inputPosition="center"
