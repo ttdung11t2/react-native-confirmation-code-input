@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -18,7 +18,7 @@ type DP = typeof ConfirmationCodeInput.defaultProps;
 const getDefaultCodeSymbols: number => Array<string> = codeLength =>
   new Array(codeLength).fill('');
 
-export default class ConfirmationCodeInput extends Component<
+export default class ConfirmationCodeInput extends PureComponent<
   $Diff<Props, DP> & $Shape<DP>,
   State,
 > {

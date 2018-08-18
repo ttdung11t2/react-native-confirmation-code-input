@@ -13,7 +13,7 @@ declare module 'react-native-confirmation-code-input' {
     | 'clear';
 
   interface ConfirmationCodeInputProps {
-    codeLength: number;
+    codeLength?: number;
     defaultCode?: string;
     compareWithCode?: string;
     whenCompareIgnoreCase?: boolean;

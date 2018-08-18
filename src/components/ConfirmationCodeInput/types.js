@@ -3,7 +3,7 @@ import type { ViewProps } from 'react-native/Libraries/Components/View/ViewPropT
 import type { VariantNames, INDEX, InputPositions } from '../../types';
 
 export type Props = $ReadOnly<{|
-  codeLength: number,
+  codeLength?: number,
   defaultCode?: string,
   compareWithCode?: string,
   whenCompareIgnoreCase?: boolean,
