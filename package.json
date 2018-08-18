@@ -1,11 +1,35 @@
 {
-  "name": "react-native-confirmation-code-input",
-  "version": "1.0.1",
-  "description": "A react-native component to input confirmation code for both Android and IOS",
+  "name": "react-native-confirmation-code-field",
+  "version": "2.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage"
   },
+  "files": [
+    "src",
+    "index.d.ts"
+  ],
+  "peerDependencies": {
+    "prop-types": "^15.6.2",
+    "react": "^16.4.0",
+    "react-native": "^0.55.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.4.11",
+    "@types/react-native": "^0.56.9",
+    "enzyme": "^3.4.3",
+    "enzyme-adapter-react-16": "^1.2.0",
+    "flow-bin": "^0.79.0",
+    "jest": "^23.5.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-native": "^0.56.0"
+  },
+  "description": "A react-native component to input confirmation code for both Android and IOS",
+  "repository": "git@github.com:retyui/react-native-confirmation-code-input.git",
+  "author": "David Narbutovich <vamnemne@gmail.com>",
+  "license": "MIT",
   "keywords": [
     "react",
     "react-component",
@@ -18,20 +42,5 @@
     "pin-code",
     "confirmation-code-input",
     "pin-code-input"
-  ],
-  "dependencies": {
-    "lodash": "^4.17.4",
-    "prop-types": "^15.5.10"
-  },
-  "homepage": "https://github.com/ttdung11t2/react-native-confirmation-code-input.git",
-  "bugs": {
-    "url": "https://github.com/ttdung11t2/react-native-confirmation-code-input.git/issues",
-    "email": "ttdung001@gmail.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ttdung11t2/react-native-confirmation-code-input.git"
-  },
-  "author": "Dung Tran <ttdung001@gmail.com>",
-  "license": "MIT"
+  ]
 }

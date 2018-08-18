@@ -1,2 +1,1 @@
-import ConfirmationCodeInput from './components/ConfirmationCodeInput';
-export default ConfirmationCodeInput;
+export { default } from "./src/components/ConfirmationCodeInput";
