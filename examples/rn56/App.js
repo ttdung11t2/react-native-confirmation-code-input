@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+// @flow
+import React, { Component, createRef } from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
 
 import styles from './styles';
-import CodeInput from '../../src/components/ConfirmationCodeInput';
+import CodeInput from 'react-native-confirmation-code-field';
 
 export default class ExampleApp extends Component {
-  _onFulfill(code) {
+  codeInputRef1 = createRef();
+
+  onFulfill = code => {
     // TODO: call API to check code here
     // If code does not match, clear input with: this.refs.codeInputRef1.clear()
     if (code === 'Q234E') {
@@ -17,11 +20,11 @@ export default class ExampleApp extends Component {
         cancelable: false,
       });
 
-      this.refs.codeInputRef1.clear();
+      this.codeInputRef1.current.clear();
     }
-  }
+  };
 
-  _onFinishCheckingCode1(isValid) {
+  onFinishCheckingCode1 = (code, isValid) => {
     console.log(isValid);
     if (!isValid) {
       Alert.alert('Confirmation Code', 'Code not match!', [{ text: 'OK' }], {
@@ -32,9 +35,10 @@ export default class ExampleApp extends Component {
         cancelable: false,
       });
     }
-  }
+  };
 
-  _onFinishCheckingCode2(isValid, code) {
+  // "isValid" prop will be "true|false" when you set "compareWithCode" prop
+  onFinishCheckingCode2 = (code, isValid) => {
     console.log(isValid);
     if (!isValid) {
       Alert.alert('Confirmation Code', 'Code not match!', [{ text: 'OK' }], {
@@ -46,7 +50,7 @@ export default class ExampleApp extends Component {
         cancelable: false,
       });
     }
-  }
+  };
 
   render() {
     return (
@@ -59,47 +63,59 @@ export default class ExampleApp extends Component {
           <View style={styles.inputWrapper1}>
             <Text style={styles.inputLabel1}>UNDERLINE CONFIRMATION CODE</Text>
             <CodeInput
-              ref="codeInputRef1"
-              secureTextEntry
-              className={'border-b'}
+              ref={this.codeInputRef1}
+              variant="border-b"
               space={5}
               size={30}
               inputPosition="left"
-              onFulfill={code => this._onFulfill(code)}
+              onFulfill={this.onFulfill}
+              onChangeCode={code => console.log(code)}
+              getInputProps={() => ({
+                secureTextEntry: true,
+              })}
             />
           </View>
 
           <View style={styles.inputWrapper2}>
             <Text style={styles.inputLabel2}>BOX CONFIRMATION CODE</Text>
             <CodeInput
-              ref="codeInputRef2"
-              secureTextEntry
+              autoFocus={false}
               compareWithCode="AsDW2"
+              ignoreCase
               activeColor="rgba(49, 180, 4, 1)"
               inactiveColor="rgba(49, 180, 4, 1.3)"
-              autoFocus={false}
-              ignoreCase={true}
               inputPosition="center"
               size={50}
-              onFulfill={isValid => this._onFinishCheckingCode1(isValid)}
-              containerStyle={{ marginTop: 30 }}
-              codeInputStyle={{ borderWidth: 1.5 }}
+              onFulfill={this.onFinishCheckingCode1}
+              containerProps={{
+                style: { marginTop: 30 },
+              }}
+              getInputProps={() => ({
+                secureTextEntry: true,
+                style: { borderWidth: 1.5 },
+              })}
             />
           </View>
 
           <View style={styles.inputWrapper3}>
             <Text style={styles.inputLabel3}>CIRCLE CONFIRMATION CODE</Text>
             <CodeInput
-              ref="codeInputRef2"
-              keyboardType="numeric"
-              codeLength={5}
-              className={'border-circle'}
-              compareWithCode="12345"
+              codeLength={6}
+              variant="border-circle"
+              compareWithCode="123456"
               autoFocus={false}
-              codeInputStyle={{ fontWeight: '800' }}
-              onFulfill={(isValid, code) =>
-                this._onFinishCheckingCode2(isValid, code)
-              }
+              // I don't recommend you use arrow function or .bind()
+              getInputProps={() => ({
+                style: { fontWeight: '800' },
+                keyboardType: 'numeric',
+              })}
+              getCodeInputStyle={(index, isActive, hasValue) => {
+                if (hasValue) {
+                  return { borderColor: 'transparent' };
+                }
+                return null;
+              }}
+              onFulfill={this.onFinishCheckingCode2}
             />
           </View>
         </ScrollView>
