@@ -16,7 +16,9 @@ A react-native confirmation code input for both IOS and Android (base on [this](
 - Clear code on fail
 
 ## Screenshot
-![Screenshot example](https://pp.userapi.com/c849128/v849128506/5b03e/d74sP8ztSX8.jpg)
+![Preview example](https://thumbs.gfycat.com/EllipticalCleverIberianmidwifetoad-size_restricted.gif)
+<img src="https://pp.userapi.com/c847221/v847221653/c6eb3/dDMxAVRqZ5Q.jpg" width="250">
+<img src="https://pp.userapi.com/c847221/v847221653/c6ea9/MgBjeePJsPM.jpg" width="250">
 
 ## Installation
 
@@ -63,7 +65,7 @@ class App extends Component {
 | `variant`               | string       | `border-box`               | Some built-in classname: `border-box`, `border-circle`, `border-b`, `border-b-t`, `border-l-r`, `clear`                                                                 |
 | **Customize**           |              |                            |                                                                                                                                                                         |
 | getInputProps           | function     |                            | [`<TextInput/>` component props](https://facebook.github.io/react-native/docs/textinput#props), `(index: number) => Object`                       |
-| getCodeInputStyle       | function     |                            | Help customize any input, must return [Style Object](https://facebook.github.io/react-native/docs/textinput#style) or `null`, (example)[examples/rn56/App.js#L111-L116] |
+| getCodeInputStyle       | function     |                            | Help customize any input, must return [Style Object](https://facebook.github.io/react-native/docs/textinput#style) or `null`, [example](examples/rn56/App.js#L82-L87)   |
 | containerProps          | Object       |                            |  [`<View/>` component props](https://facebook.github.io/react-native/docs/view#props)                                                                                   |
 | **Other**               |              |                            |                                                                                                                                                                         |
 | `testID`                | any          |                            | Help in test                                                                                                                                                            |
@@ -96,7 +98,7 @@ class App extends Component {
 
 ## Example
 
-### See [EXAMPLE](examples/rn56/App.js#L5-L124)
+### See [EXAMPLE](examples/rn56/App.js#L7-L192)
 
 ### Usage:
 
@@ -113,7 +115,3 @@ react-native run-android
 ```
 
 
-
-## Demo
-
-![Preview example](https://thumbs.gfycat.com/TameLittleBarnacle-size_restricted.gif)
