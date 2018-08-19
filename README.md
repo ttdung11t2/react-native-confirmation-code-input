@@ -1,119 +1,117 @@
-# react-native-confirmation-code-input
-A react-native confirmation code input for both IOS and Android
+# react-native-confirmation-code-field
+
+[![AppVeyor](https://img.shields.io/appveyor/ci/retyui/react-native-confirmation-code-field.svg?label=win)](https://ci.appveyor.com/project/retyui/react-native-confirmation-code-field)
+[![Travis](https://img.shields.io/travis/retyui/react-native-confirmation-code-field.svg?label=unix)](https://travis-ci.org/retyui/react-native-confirmation-code-field)
+
+A react-native confirmation code input for both IOS and Android (base on [this](https://github.com/ttdung11t2/react-native-confirmation-code-input) dead project)
+
+## [MIgration Guide](migration.md)
 
 ## Features
 - A user-friendly component for inputting confirmation code
-- Extended from [<TextInput/>](https://facebook.github.io/react-native/docs/textinput.html) component, so you can use its props
 - Built-in type of code input: underline, box, circle
-- Set position: center, left, right, full width
-- Set size and active color, inactive color
-- Easy to customize style, use base style from TextInput component
+- Custom position: center, left, right, full width
+- Easy to customize style
 - Check code on finish or return code for async checking
 - Clear code on fail
-- Use React Native ES6
-## Screenshots
 
-![underline-28082017](https://thumbs.gfycat.com/InfiniteUnequaledGreendarnerdragonfly-size_restricted.gif)
-![box-28082017](https://thumbs.gfycat.com/CourageousFrayedBronco-size_restricted.gif)
-![circle-28082017](https://thumbs.gfycat.com/ClearcutAssuredHake-size_restricted.gif)
-![full-28082017](https://thumbs.gfycat.com/WeeklyAltruisticBlackbear-size_restricted.gif)
+## Screenshot
+![Preview example](https://thumbs.gfycat.com/EllipticalCleverIberianmidwifetoad-size_restricted.gif)
+<img src="https://pp.userapi.com/c847221/v847221653/c6eb3/dDMxAVRqZ5Q.jpg" width="250">
+<img src="https://pp.userapi.com/c847221/v847221653/c6ea9/MgBjeePJsPM.jpg" width="250">
 
 ## Installation
 
 ```sh
-npm install react-native-confirmation-code-input --save
+npm install react-native-confirmation-code-field
+# or
+yarn add react-native-confirmation-code-field
 ```
 
 ## Usage
-### Basic
-Import this module:  
-```javascript
-import CodeInput from 'react-native-confirmation-code-input';
-```
-Use as a component and style it:  
-```javascript
 
-render() {
-  return (
-    <CodeInput
-      ref="codeInputRef1"
-      secureTextEntry
-      className={'border-b'}
-      space={5}
-      size={30}
-      inputPosition='left'
-      onFulfill={(code) => this._onFulfill(code)}
-    />
-    
-    <CodeInput
-      ref="codeInputRef2"
-      secureTextEntry
-      compareWithCode='AsDW2'
-      activeColor='rgba(49, 180, 4, 1)'
-      inactiveColor='rgba(49, 180, 4, 1.3)'
-      autoFocus={false}
-      ignoreCase={true}
-      inputPosition='center'
-      size={50}
-      onFulfill={(isValid) => this._onFinishCheckingCode1(isValid)}
-      containerStyle={{ marginTop: 30 }}
-      codeInputStyle={{ borderWidth: 1.5 }}
-    />
-    
-    <CodeInput
-      ref="codeInputRef2"
-      keyboardType="numeric"
-      codeLength={5}
-      className='border-circle'
-      compareWithCode='12345'
-      autoFocus={false}
-      codeInputStyle={{ fontWeight: '800' }}
-      onFulfill={(isValid, code) => this._onFinishCheckingCode2(isValid, code)}
-    />
-  )
+```js
+import React, { Component } from 'react';
+import CodeInput from 'react-native-confirmation-code-field';
+
+class App extends Component {
+  handlerOnFulfill = code => console.log(code);
+
+  render() {
+    return <CodeInput onFulfill={this.handlerOnFulfill} />;
+  }
 }
 ```
 
-### props
-This component uses the same props as [<TextInput/>](https://facebook.github.io/react-native/docs/textinput.html). Below are additional props for this component:  
 
-Prop       | Type    | Default    | Description
----------- | ------- | ---------- | -----------------------
-`codeLength`        | number   | 5            | length of confirmation code -> number of cells
-`compareWithCode`   | string   |              | code to compare. if null, onFulfill callback return inputted code to check later
-`inputPosition`     | string   | `center`     | position of code input in its container: `left`, `right`, `center`, `full-width`
-`size`              | number   | 40           | size of input cells
-`space`             | number   | 8            | space between 2 cells
-`className`         | string   | `border-box` | Some built-in classname: `border-box`, `border-circle`, `border-b`, `border-b-t`, `border-l-r`
-`cellBorderWidth`   | number   | 1.0          | width of cell borders
-`activeColor`       | string   | `rgba(255, 255, 255, 1)`   | color of cells when active
-`inactiveColor`     | string   | `rgba(255, 255, 255, 0.2)` | color of cells when inactive
-`ignoreCase`        | boolean  | `false`      | ignore case when checking code
-`autoFocus`         | boolean  | `true`       | auto focus on code input
-`codeInputStyle`    | style object   |        | custom style for code input
-`containerStyle`    | style object   |        | custom style for code input container
-`onFulfill`         | function |              | callback function called when fulfilling code. If `compareWithCode` is null -> return `(code)` in callback, else return `(isValid, code)`. **Required**
+### Props
 
-## functions
-clear input:
-```javascript
-this.refs.refName.clear();
-...
-<CodeInput 
-    ...
-    ref="refName"
-/>
+| Prop                    | Type         | Default                    | Description                                                                                                                                                             |
+| ----------------------- | ------------ | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onFulfill`             | function     |                            | Callback function called when fulfilling code. If `compareWithCode` is null -> return `(code)` in callback, else return `(code, isValid)`. **Required**                 |
+| **Configurate**         |              |                            |                                                                                                                                                                         |
+| `autoFocus`             | boolean      | `true`                     | Auto focus on code input                                                                                                                                                |
+| `codeLength`            | number       | 5                          | Length of confirmation code -> number of cells                                                                                                                          |
+| `defaultCode`           | string       | null                       | Default code value, must be the same length as `codeLength`                                                                                                             |
+| `compareWithCode`       | string       |                            | Code to compare. if `null`, `onFulfill` callback return inputted code to check later                                                                                    |
+| `ignoreCaseWhenCompareCode` | boolean      | `false`                    | Ignore case when checking code                                                                                                                                          |
+| **Style**               |              |                            |                                                                                                                                                                         |
+| `activeColor`           | string       | `rgba(255, 255, 255, 1)`   | Color of cells when active                                                                                                                                              |
+| `cellBorderWidth`       | number       | 1.0                        | Width of cell borders                                                                                                                                                   |
+| `inactiveColor`         | string       | `rgba(255, 255, 255, 0.2)` | Color of cells when inactive                                                                                                                                            |
+| `inputPosition`         | string       | `center`                   | Position of code input in its container: `left`, `right`, `center`, `full-width`                                                                                        |
+| `size`                  | number       | 40                         | Size of input cells                                                                                                                                                     |
+| `space`                 | number       | 8                          | Space between 2 cells                                                                                                                                                   |
+| `variant`               | string       | `border-box`               | Some built-in classname: `border-box`, `border-circle`, `border-b`, `border-b-t`, `border-l-r`, `clear`                                                                 |
+| **Customize**           |              |                            |                                                                                                                                                                         |
+| getInputProps           | function     |                            | [`<TextInput/>` component props](https://facebook.github.io/react-native/docs/textinput#props), `(index: number) => Object`                       |
+| getCodeInputStyle       | function     |                            | Help customize any input, must return [Style Object](https://facebook.github.io/react-native/docs/textinput#style) or `null`, [example](examples/rn56/App.js#L82-L87)   |
+| containerProps          | Object       |                            |  [`<View/>` component props](https://facebook.github.io/react-native/docs/view#props)                                                                                   |
+| **Other**               |              |                            |                                                                                                                                                                         |
+| `testID`                | any          |                            | Help in test                                                                                                                                                            |
+
+### Functions
+
+#### `clear()` method:
+
+```js
+import React, { Component, createRef } from 'react';
+import CodeInput from 'react-native-confirmation-code-field';
+
+class App extends Component {
+  inputRef = createRef();
+
+  handlerOnIvalidCode() {
+    this.inputRef.current.clear();
+  }
+
+  render() {
+    return (
+      <CodeInput
+        ref={this.inputRef}
+        // ...
+      />
+    );
+  }
+}
 ```
+
 ## Example
-See [EXAMPLE](example)
-```sh
-git clone https://github.com/ttdung11t2/react-native-confirmation-code-input.git
-cd react-native-confirmation-code-input/example
-npm install
-react-native run-ios / react-native run-android
-```
-## License
 
-react-native-confirmation-code-input is released under the MIT license. See [LICENSE](LICENSE) for details.  
-  
-Any question or support will welcome.
+### See [EXAMPLE](examples/rn56/App.js#L7-L192)
+
+### Usage:
+
+```sh
+git clone https://github.com/retyui/react-native-confirmation-code-field
+
+cd react-native-confirmation-code-field/examples/rn56
+
+npm install
+
+react-native run-ios
+#or
+react-native run-android
+```
+
+
