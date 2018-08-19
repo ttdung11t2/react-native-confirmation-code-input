@@ -1,0 +1,16 @@
+# I can use "files" section in package.json, because of the test files that fall into the pack
+# https://github.com/evcohen/jsx-ast-utils/issues/18
+*.md
+*.test.js
+*.tgz
+.editorconfig
+.eslintrc.js
+.flowconfig
+.idea/
+.setup-tests.js
+.travis.yml
+/*.config.js
+appveyor.yml
+coverage/
+examples/
+yarn.lock

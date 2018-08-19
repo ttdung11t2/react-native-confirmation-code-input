@@ -8,10 +8,6 @@
     "lint": "eslint src ./*.js",
     "ci": "npm run test & npm run flow & npm run lint"
   },
-  "files": [
-    "src",
-    "index.d.ts"
-  ],
   "peerDependencies": {
     "prop-types": "^15.6.2",
     "react": "^16.4.0",
