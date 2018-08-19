@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { TextInput } from 'react-native';
 
-import { omit } from '../../helps';
+import { omit } from '../../omit';
 
 import type { INDEX } from '../../types';
 

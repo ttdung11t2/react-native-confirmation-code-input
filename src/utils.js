@@ -40,16 +40,17 @@ export const getInputSpaceStyle = (
   }
 };
 
-type Props = {
+type Options = {
   +cellBorderWidth: number,
   +activeColor: string,
   +inactiveColor: string,
   +inputSpaceStyle: Object,
 };
+
 export const getClassStyle = (
   variant: VariantNames,
   active: boolean,
-  { inputSpaceStyle, cellBorderWidth, activeColor, inactiveColor }: Props,
+  { inputSpaceStyle, cellBorderWidth, activeColor, inactiveColor }: Options,
 ) => {
   const classStyle = { ...inputSpaceStyle, color: activeColor };
 

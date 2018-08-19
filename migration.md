@@ -34,5 +34,5 @@ _used to be so:_
 | ---------------- | ---------------------------------------------------------------------------------------------------------------- |
 | `codeInputStyle` | Use `getCodeInputStyle(index,isFocused,hasValue)` to set custom style, (example)[examples/rn56/App.js#L111-L116] |
 | `containerStyle` | Use `containerProps` to set style, (example)[examples/rn56/App.js#L89-L91]                                       |
-| `ignoreCase`     | Renamed, use `whenCompareIgnoreCase`                                                                             |
+| `ignoreCase`     | Renamed, use `ignoreCaseWhenCompareCode`                                                                             |
 | `className`      | Renamed, use `variant`                                                                                           |

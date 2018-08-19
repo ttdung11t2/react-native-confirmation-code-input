@@ -80,7 +80,7 @@ export default class ExampleApp extends Component {
             <CodeInput
               autoFocus={false}
               compareWithCode="AsDW2"
-              whenCompareIgnoreCase
+              ignoreCaseWhenCompareCode
               activeColor="rgba(49, 180, 4, 1)"
               inactiveColor="rgba(49, 180, 4, 1.3)"
               inputPosition="center"

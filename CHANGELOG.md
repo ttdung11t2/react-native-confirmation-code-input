@@ -3,7 +3,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.0.0
 
-* Rename `ignoreCase` => `whenCompareIgnoreCase` property
+* Rename `ignoreCase` => `ignoreCaseWhenCompareCode` property
 * Rename `className` => `variant` property
 
 * Add new methods (`getCodeInputStyle()`and `getInputProps()`_  for help users to customize inputs

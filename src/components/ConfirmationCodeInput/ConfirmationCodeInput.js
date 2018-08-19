@@ -63,7 +63,9 @@ export default class ConfirmationCodeInput extends PureComponent<
     );
   }
 
-  onFocus = (index: INDEX) => {
+  detectFirstFocus: boolean = false;
+
+  handlerOnFocus = (index: INDEX) => {
     const newCodeArr = [...this.state.codeSymbols];
     const currentEmptyIndex = newCodeArr.findIndex(c => !c);
 
@@ -83,7 +85,11 @@ export default class ConfirmationCodeInput extends PureComponent<
         currentIndex: index,
       },
       () => {
-        this.onChangeCb();
+        if (this.detectFirstFocus) {
+          this.onChangeCb();
+        } else {
+          this.detectFirstFocus = true;
+        }
       },
     );
   };
@@ -105,7 +111,7 @@ export default class ConfirmationCodeInput extends PureComponent<
     });
   }
 
-  static MINIMAL_DELAY = 20;
+  static IOS_MINIMAL_DELAY = 20;
 
   lastKeyEventTimestamp: number = 0;
 
@@ -123,10 +129,11 @@ export default class ConfirmationCodeInput extends PureComponent<
        */
       if (
         Math.abs(this.lastKeyEventTimestamp - e.timeStamp) <
-        ConfirmationCodeInput.MINIMAL_DELAY
+        ConfirmationCodeInput.IOS_MINIMAL_DELAY
       ) {
         return;
       }
+
       const { currentIndex } = this.state;
       const nextIndex = currentIndex > 0 ? currentIndex - 1 : 0;
 
@@ -147,7 +154,11 @@ export default class ConfirmationCodeInput extends PureComponent<
       this.setFocus(this.state.currentIndex + 1);
     }
 
-    const { onFulfill, compareWithCode, whenCompareIgnoreCase } = this.props;
+    const {
+      onFulfill,
+      compareWithCode,
+      ignoreCaseWhenCompareCode,
+    } = this.props;
     const { currentIndex, codeSymbols } = this.state;
     const newCodeSymbols = [...codeSymbols];
 
@@ -160,7 +171,7 @@ export default class ConfirmationCodeInput extends PureComponent<
         const isMatching = isMatchingCode(
           code,
           compareWithCode,
-          whenCompareIgnoreCase,
+          ignoreCaseWhenCompareCode,
         );
 
         onFulfill(code, isMatching);
@@ -233,7 +244,7 @@ export default class ConfirmationCodeInput extends PureComponent<
         maxLength={1}
         value={value ? value.toString() : ''}
         onChangeText={this.onInputCode}
-        onFocus={this.onFocus}
+        onFocus={this.handlerOnFocus}
         onKeyPress={this.onKeyPress}
       />
     );
@@ -262,7 +273,7 @@ export default class ConfirmationCodeInput extends PureComponent<
     codeLength: PropTypes.number,
     defaultCode: validateCompareCode,
     compareWithCode: validateCompareCode,
-    whenCompareIgnoreCase: PropTypes.bool,
+    ignoreCaseWhenCompareCode: PropTypes.bool,
     activeColor: PropTypes.string,
     cellBorderWidth: PropTypes.number,
     inactiveColor: PropTypes.string,
@@ -281,7 +292,7 @@ export default class ConfirmationCodeInput extends PureComponent<
     codeLength: 5,
     defaultCode: null,
     compareWithCode: null,
-    whenCompareIgnoreCase: false,
+    ignoreCaseWhenCompareCode: false,
     activeColor: 'rgba(255, 255, 255, 1)',
     cellBorderWidth: 1,
     inactiveColor: 'rgba(255, 255, 255, 0.2)',

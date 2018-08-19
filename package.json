@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/components/ConfirmationCodeInput/index.js",
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest",
     "flow": "flow",
     "lint": "eslint src ./*.js",
     "ci": "npm run test & npm run flow & npm run lint"

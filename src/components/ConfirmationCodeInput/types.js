@@ -6,7 +6,7 @@ export type Props = $ReadOnly<{|
   codeLength?: number,
   defaultCode?: string,
   compareWithCode?: string,
-  whenCompareIgnoreCase?: boolean,
+  ignoreCaseWhenCompareCode?: boolean,
 
   activeColor?: string,
   cellBorderWidth?: number,
