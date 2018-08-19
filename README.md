@@ -7,6 +7,7 @@
 A react-native confirmation code input for both IOS and Android (base on [this](https://github.com/ttdung11t2/react-native-confirmation-code-input) dead project)
 
 ## [MIgration Guide](migration.md)
+## [Live demo](https://snack.expo.io/HkRCGgPLX?session_id=snack-session-Sy01mxvUm)
 
 ## Features
 - A user-friendly component for inputting confirmation code
