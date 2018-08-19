@@ -10,10 +10,6 @@ const OUT_PATH = resolve(
 fs.ensureDirSync(resolve(OUT_PATH, './src/'));
 
 fs.copySync(
-  resolve(__dirname, '../../index.js'),
-  resolve(OUT_PATH, './index.js'),
-);
-fs.copySync(
   resolve(__dirname, '../../package.json'),
   resolve(OUT_PATH, './package.json'),
 );
