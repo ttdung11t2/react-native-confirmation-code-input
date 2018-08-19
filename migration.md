@@ -1,5 +1,9 @@
 # Migrate to this version
 
+`autoFocus` property default was ~~`true`~~ but now is `false`
+
+--- 
+
 It's bad idea:
 "~~This component uses the same props as . Below are additional props for this component:~~"
 

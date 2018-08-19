@@ -237,6 +237,7 @@ export default class ConfirmationCodeInput extends PureComponent<
           styles.codeInput,
           this.initialCodeInputStyle,
           this.getClassStyle(variant, currentIndex === index),
+          customInputProps && customInputProps.style,
           getCodeInputStyle
             ? getCodeInputStyle(index, currentIndex === index, Boolean(value))
             : null,
@@ -300,7 +301,7 @@ export default class ConfirmationCodeInput extends PureComponent<
     size: 40,
     space: 8,
     variant: 'border-box',
-    autoFocus: true,
+    autoFocus: false,
     getInputProps: null,
     onChangeCode: null,
     containerProps: {},
