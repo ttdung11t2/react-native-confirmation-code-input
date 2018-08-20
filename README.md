@@ -44,18 +44,18 @@ class App extends Component {
 }
 ```
 
-
 ### Props
 
 | Prop                    | Type         | Default                    | Description                                                                                                                                                             |
 | ----------------------- | ------------ | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `onFulfill`             | function     |                            | Callback function called when fulfilling code. If `compareWithCode` is null -> return `(code)` in callback, else return `(code, isValid)`. **Required**                 |
+| `onChangeCode`          | function     |                            | Callback function called when code cnage.  `(code: string) => void`                                                                                                     |
 | **Configurate**         |              |                            |                                                                                                                                                                         |
 | `autoFocus`             | boolean      | `true`                     | Auto focus on code input                                                                                                                                                |
 | `codeLength`            | number       | 5                          | Length of confirmation code -> number of cells                                                                                                                          |
 | `defaultCode`           | string       | null                       | Default code value, must be the same length as `codeLength`                                                                                                             |
 | `compareWithCode`       | string       |                            | Code to compare. if `null`, `onFulfill` callback return inputted code to check later                                                                                    |
-| `ignoreCaseWhenCompareCode` | boolean      | `false`                    | Ignore case when checking code                                                                                                                                          |
+| `ignoreCaseWhenCompareCode` | boolean      | `false`                    | Ignore case when checking code                                                                                                                                      |
 | **Style**               |              |                            |                                                                                                                                                                         |
 | `activeColor`           | string       | `rgba(255, 255, 255, 1)`   | Color of cells when active                                                                                                                                              |
 | `cellBorderWidth`       | number       | 1.0                        | Width of cell borders                                                                                                                                                   |
