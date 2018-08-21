@@ -21,7 +21,7 @@
     - [`variant?: 'border-box' | 'border-circle' | 'border-b' | 'border-b-t' | 'border-l-r' | 'clear'`](#variant-border-box--border-circle--border-b--border-b-t--border-l-r--clear)
   - [Customize props](#customize-props)
     - [`containerProps?: Object`](#containerprops-object)
-    - [`getCodeInputStyle?: (index: number, isFocused: boolean, hasValue: boolean) => Object`](#getcodeinputstyle-index-number-isfocused-boolean-hasvalue-boolean--object)
+    - [`getInputStyle?: (index: number, isFocused: boolean, hasValue: boolean) => Object`](#getInputStyle-index-number-isfocused-boolean-hasvalue-boolean--object)
     - [`getInputProps?: (index: number) => Object`](#getinputprops-index-number--object)
   - [Other props](#other-props)
     - [`testID?: any`](#testid-any)
@@ -37,7 +37,9 @@
 ### `onFulfill: (code: string, isMatching: ?boolean) => void`
 
 Callback function called when fulfilling code.
+
 If `compareWithCode` is null -> return `(code)` in callback, else return `(code, isValid)`.
+
 **Required**
 
 ### `onChangeCode?: (code: string) => void`
@@ -114,9 +116,9 @@ Some built-in variants. Default `border-box`. [Demo `variant`:](examples/rn56/sr
 
 [`<View/>` component props](https://facebook.github.io/react-native/docs/view#props)
 
-### `getCodeInputStyle?: (index: number, isFocused: boolean, hasValue: boolean) => Object`
+### `getInputStyle?: (index: number, isFocused: boolean, hasValue: boolean) => Object`
 
-Help customize any input, must return [Style Object](https://facebook.github.io/react-native/docs/textinput#style) or `null`. [example](examples/rn56/src/realDemo/DarkExample/index.js#L76)
+Help customize any input, must return [Style Object](https://facebook.github.io/react-native/docs/textinput#style) or `null`. [example](https://github.com/retyui/react-native-confirmation-code-field/blob/master/examples/rn56/src/realDemo/DarkExample/index.js#L36-L41)
 
 ### `getInputProps?: (index: number) => Object`
 

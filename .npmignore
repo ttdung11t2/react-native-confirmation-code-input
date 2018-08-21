@@ -14,3 +14,4 @@ appveyor.yml
 coverage/
 examples/
 yarn.lock
+docs/

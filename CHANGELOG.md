@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Rename `ignoreCase` => `ignoreCaseWhenCompareCode` property
 * Rename `className` => `variant` property
 
-* Add new methods (`getCodeInputStyle()`and `getInputProps()`_  for help users to customize inputs
+* Add new methods (`getInputStyle()`and `getInputProps()`_  for help users to customize inputs
 * Add new property `containerProps`, `testID`
 * Add `onChangeCode()` callback and `defaultCode` props. [#22](https://github.com/ttdung11t2/react-native-confirmation-code-input/pull/22)[#33](https://github.com/ttdung11t2/react-native-confirmation-code-input/pull/33/files)
 * Add `clear()` method to TypeScript definition [#21](https://github.com/ttdung11t2/react-native-confirmation-code-input/pull/21)

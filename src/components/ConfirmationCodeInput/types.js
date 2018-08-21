@@ -23,7 +23,7 @@ export type Props = $ReadOnly<{|
 
   getInputProps?: (index: INDEX) => Object,
   // help set custom style to any inputs
-  getCodeInputStyle?: (
+  getInputStyle?: (
     index: INDEX,
     isFocused: boolean,
     hasValue: boolean,

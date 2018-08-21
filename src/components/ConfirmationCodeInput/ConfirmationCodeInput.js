@@ -208,7 +208,7 @@ export default class ConfirmationCodeInput extends PureComponent<
 
   renderInput(value: string, index: INDEX) {
     const {
-      getCodeInputStyle,
+      getInputStyle,
       autoFocus,
       variant,
       activeColor,
@@ -238,8 +238,8 @@ export default class ConfirmationCodeInput extends PureComponent<
           this.initialCodeInputStyle,
           this.getClassStyle(variant, currentIndex === index),
           customInputProps && customInputProps.style,
-          getCodeInputStyle
-            ? getCodeInputStyle(index, currentIndex === index, Boolean(value))
+          getInputStyle
+            ? getInputStyle(index, currentIndex === index, Boolean(value))
             : null,
         ]}
         maxLength={1}

@@ -33,7 +33,7 @@ declare module 'react-native-confirmation-code-input' {
 
     getInputProps?: (index: INDEX) => ReactNative.TextInputProps;
     // help set custom style to any inputs
-    getCodeInputStyle?: (
+    getInputStyle?: (
       index: INDEX,
       isFocused: boolean,
       hasValue: boolean,

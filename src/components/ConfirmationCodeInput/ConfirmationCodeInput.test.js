@@ -194,19 +194,19 @@ test('must call onFulfill and blur from last input when the code is full', () =>
   expect(blur).toHaveBeenCalledWith(index2);
 });
 
-test('must call getCodeInputStyle', () => {
-  const getCodeInputStyle = jest.fn();
+test('must call getInputStyle', () => {
+  const getInputStyle = jest.fn();
   const codeLength = 4;
 
   render({
-    getCodeInputStyle,
+    getInputStyle,
     codeLength,
   });
 
-  expect(getCodeInputStyle).toHaveBeenCalledTimes(codeLength);
-  expect(getCodeInputStyle).toHaveBeenCalledWith(1, false, false);
-  expect(getCodeInputStyle).toHaveBeenCalledWith(2, false, false);
-  expect(getCodeInputStyle).toHaveBeenCalledWith(3, false, false);
+  expect(getInputStyle).toHaveBeenCalledTimes(codeLength);
+  expect(getInputStyle).toHaveBeenCalledWith(1, false, false);
+  expect(getInputStyle).toHaveBeenCalledWith(2, false, false);
+  expect(getInputStyle).toHaveBeenCalledWith(3, false, false);
 });
 
 describe('compareWithCode', () => {

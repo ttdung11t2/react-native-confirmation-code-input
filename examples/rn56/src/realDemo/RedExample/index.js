@@ -25,7 +25,7 @@ export default class RedExample extends Component {
     });
   };
 
-  getCodeInputStyle = (index, isActive, hasValue) => {
+  getInputStyle = (index, isActive, hasValue) => {
     if (hasValue) {
       return styles.inputNotEmpty;
     }
@@ -54,7 +54,7 @@ export default class RedExample extends Component {
             codeLength={6}
             compareWithCode="123456"
             getInputProps={this.getInputProps}
-            getCodeInputStyle={this.getCodeInputStyle}
+            getInputStyle={this.getInputStyle}
             containerProps={this.containerProps}
             onFulfill={this.onFinishCheckingCode}
           />

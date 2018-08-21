@@ -33,7 +33,7 @@ export default class DarkExample extends Component {
     this.codeInputRef.current.clear();
   };
 
-  getCodeInputStyle = (index, isActive, hasValue) => {
+  getInputStyle = (index, isActive, hasValue) => {
     if (hasValue) {
       return styles.inputNotEmpty;
     }
@@ -73,7 +73,7 @@ export default class DarkExample extends Component {
             variant="clear"
             codeLength={4}
             getInputProps={this.getInputProps}
-            getCodeInputStyle={this.getCodeInputStyle}
+            getInputStyle={this.getInputStyle}
             containerProps={DarkExample.containerProps}
             onFulfill={this.onFinishCheckingCode}
           />
