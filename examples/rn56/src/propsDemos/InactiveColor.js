@@ -14,7 +14,7 @@ export default function InactiveColor() {
       </View>
       <View style={styles.sectionDemo}>
         <Text style={styles.preText}>
-          {'inactiveColor="rgba(255, 255, 255, 0.2)" (default)'}
+          {`inactiveColor="${CodeFiled.defaultProps.inactiveColor}" (default)`}
         </Text>
         <CodeFiled />
       </View>

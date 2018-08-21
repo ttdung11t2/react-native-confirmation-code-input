@@ -9,7 +9,9 @@ export default function Variant() {
     <View style={styles.rootView}>
       <Text style={styles.typing}>variant?: ENUM()</Text>
       <View style={styles.sectionDemo}>
-        <Text style={styles.preText}>{'variant="border-box" (default)'}</Text>
+        <Text style={styles.preText}>{`variant="${
+          CodeFiled.defaultProps.variant
+        }" (default)`}</Text>
         <CodeFiled />
       </View>
       <View style={styles.sectionDemo}>

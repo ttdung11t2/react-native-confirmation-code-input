@@ -15,7 +15,9 @@ export default function ActiveColor() {
         <CodeFiled cellBorderWidth={0.5} />
       </View>
       <View style={styles.sectionDemo}>
-        <Text style={styles.preText}>{`cellBorderWidth={1} (default)`}</Text>
+        <Text style={styles.preText}>{`cellBorderWidth={${
+          CodeFiled.defaultProps.cellBorderWidth
+        }} (default)`}</Text>
         <CodeFiled />
       </View>
       <View style={styles.sectionDemo}>

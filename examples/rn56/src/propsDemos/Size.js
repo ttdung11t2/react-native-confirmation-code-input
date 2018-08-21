@@ -13,7 +13,9 @@ export default function Size() {
         <CodeFiled size={20} />
       </View>
       <View style={styles.sectionDemo}>
-        <Text style={styles.preText}>{`size={40} (default)`}</Text>
+        <Text style={styles.preText}>{`size={${
+          CodeFiled.defaultProps.size
+        } (default)`}</Text>
         <CodeFiled />
       </View>
       <View style={styles.sectionDemo}>

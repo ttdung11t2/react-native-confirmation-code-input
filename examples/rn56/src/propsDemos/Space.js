@@ -13,7 +13,9 @@ export default function Space() {
         <CodeFiled space={1} />
       </View>
       <View style={styles.sectionDemo}>
-        <Text style={styles.preText}>{`space={8} (default)`}</Text>
+        <Text style={styles.preText}>{`space={${
+          CodeFiled.defaultProps.space
+        }} (default)`}</Text>
         <CodeFiled />
       </View>
       <View style={styles.sectionDemo}>

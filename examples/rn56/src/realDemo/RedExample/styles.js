@@ -26,6 +26,7 @@ export default StyleSheet.create({
     height: 50,
     width: 40,
     borderRadius: 3,
+    color: '#fff',
     backgroundColor: 'rgba(255,255,255,0.3)',
   },
   inputNotEmpty: {

@@ -297,7 +297,7 @@ export default class ConfirmationCodeInput extends PureComponent<
   };
 
   static defaultProps = {
-    activeColor: 'rgba(255, 255, 255, 1)',
+    activeColor: '#fff',
     autoFocus: false,
     cellBorderWidth: 1,
     codeLength: 5,
@@ -306,7 +306,7 @@ export default class ConfirmationCodeInput extends PureComponent<
     defaultCode: null,
     getInputProps: null,
     ignoreCaseWhenCompareCode: false,
-    inactiveColor: 'rgba(255, 255, 255, 0.2)',
+    inactiveColor: '#ffffff35',
     inputPosition: 'center',
     onChangeCode: null,
     size: 40,

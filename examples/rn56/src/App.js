@@ -10,7 +10,7 @@ import VariantDemo from './propsDemos/Variant';
 import PositionDemo from './propsDemos/InputPosition';
 
 import RedExample from './realDemo/RedExample';
-import DarkExample from './realDemo/DarkDemo';
+import DarkExample from './realDemo/DarkExample';
 
 import styles from './styles';
 

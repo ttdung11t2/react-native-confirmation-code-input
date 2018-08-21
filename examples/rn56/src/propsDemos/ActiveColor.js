@@ -13,7 +13,9 @@ export default function ActiveColor() {
         <CodeFiled activeColor="gold" />
       </View>
       <View style={styles.sectionDemo}>
-        <Text style={styles.preText}>{'activeColor="#fff" (default)'}</Text>
+        <Text style={styles.preText}>{`activeColor="${
+          CodeFiled.defaultProps.activeColor
+        }" (default)`}</Text>
         <CodeFiled />
       </View>
       <View style={styles.sectionDemo}>

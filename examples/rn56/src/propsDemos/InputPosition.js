@@ -17,7 +17,9 @@ export default function InputPosition() {
         <CodeFiled inputPosition="right" />
       </View>
       <View style={styles.sectionDemo}>
-        <Text style={styles.preText}>{'inputPosition="center" (default)'}</Text>
+        <Text style={styles.preText}>{`inputPosition="${
+          CodeFiled.defaultProps.inputPosition
+        }" (default)`}</Text>
         <CodeFiled />
       </View>
       <View style={styles.sectionDemo}>
