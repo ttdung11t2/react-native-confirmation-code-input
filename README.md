@@ -1,4 +1,4 @@
-#react-native-confirmation-code-field
+# react-native-confirmation-code-field
 
 [![npm](https://img.shields.io/npm/v/react-native-confirmation-code-field.svg)](https://www.npmjs.com/package/react-native-confirmation-code-field)
 [![AppVeyor](https://img.shields.io/appveyor/ci/retyui/react-native-confirmation-code-field.svg?label=windows)](https://ci.appveyor.com/project/retyui/react-native-confirmation-code-field)
