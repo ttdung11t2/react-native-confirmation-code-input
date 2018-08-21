@@ -14,10 +14,7 @@ A react-native confirmation code field for both IOS and Android (base on [this](
 
 ## Screenshots
 
-![Preview example](https://thumbs.gfycat.com/EllipticalCleverIberianmidwifetoad-size_restricted.gif)
-
 <img width="250" src="https://raw.githubusercontent.com/retyui/react-native-confirmation-code-field/master/docs/img/redDemo.jpg"/>
-
 <img width="250" src="https://raw.githubusercontent.com/retyui/react-native-confirmation-code-field/master/docs/img/darkDemo.jpg"/>
 
 ## Install
