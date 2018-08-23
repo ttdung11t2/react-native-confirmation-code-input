@@ -1,4 +1,6 @@
-### Usage:
+## All examples are here [`./src`](src/)
+
+## Usage:
 
 ```sh
 git clone https://github.com/retyui/react-native-confirmation-code-field
