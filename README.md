@@ -1,7 +1,6 @@
 # react-native-confirmation-code-field
 
 [![npm](https://img.shields.io/npm/v/react-native-confirmation-code-field.svg)](https://www.npmjs.com/package/react-native-confirmation-code-field)
-[![AppVeyor](https://img.shields.io/appveyor/ci/retyui/react-native-confirmation-code-field.svg?label=windows)](https://ci.appveyor.com/project/retyui/react-native-confirmation-code-field)
 [![Travis](https://img.shields.io/travis/retyui/react-native-confirmation-code-field.svg?label=unix)](https://travis-ci.org/retyui/react-native-confirmation-code-field)
 
 A react-native confirmation code field for both IOS and Android (base on [this](https://github.com/ttdung11t2/react-native-confirmation-code-input) project [Migration Guide](migration.md))
