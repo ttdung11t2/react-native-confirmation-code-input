@@ -180,6 +180,11 @@ export default class ConfirmationCodeInput extends PureComponent<
   // on Android: calling onChangeText very slowly
   handlerOnChangeText = (text: string, index: INDEX) => {
     const { codeSymbols } = this.state;
+
+    if (!this.props.canPasteCode) {
+      text = text[0];
+    }
+
     const newCodeSymbols = this.normalizeNewCode([...codeSymbols, ...text]);
     const currentIndex = this.getCurrentIndex(newCodeSymbols);
 
@@ -188,15 +193,15 @@ export default class ConfirmationCodeInput extends PureComponent<
       currentIndex: currentIndex + 1,
     });
 
-    if (!this.isLastIndex(currentIndex)) {
-      this.setFocus(currentIndex + 1);
-    } else {
+    if (this.isLastIndex(currentIndex)) {
       const { onFulfill } = this.props;
       const code = newCodeSymbols.join('');
 
       this.blur(index);
 
       onFulfill(code);
+    } else {
+      this.setFocus(currentIndex + 1);
     }
   };
 
