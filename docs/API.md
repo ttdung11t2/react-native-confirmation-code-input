@@ -4,13 +4,12 @@
 
 - [API](#api)
   - [Base props](#base-props)
-    - [`onFulfill: (code: string, isMatching: ?boolean) => void`](#onfulfill-code-string-ismatching-boolean--void)
+    - [`onFulfill: (code: string) => void`](#onfulfill-code-string--void)
     - [`onChangeCode?: (code: string) => void`](#onchangecode-code-string--void)
+    - [`canPasteCode?: boolean`](#canpastecode-boolean)
     - [`autoFocus?: boolean`](#autofocus-boolean)
     - [`codeLength?: number`](#codelength-number)
     - [`defaultCode?: string`](#defaultcode-string)
-    - [`compareWithCode?: string`](#comparewithcode-string)
-    - [`ignoreCaseWhenCompareCode?: boolean`](#ignorecasewhencomparecode-boolean)
   - [Style props](#style-props)
     - [`maskSymbol:? string`](#masksymbol-string)
     - [`keyboardType:? KeyboardType`](#keyboardtype-keyboardtype)
@@ -36,17 +35,19 @@
 
 ## Base props
 
-### `onFulfill: (code: string, isMatching: ?boolean) => void`
+### `onFulfill: (code: string) => void`
 
 Callback function called when fulfilling code.
-
-If `compareWithCode` is null -> return `(code)` in callback, else return `(code, isValid)`.
 
 **Required**
 
 ### `onChangeCode?: (code: string) => void`
 
 Callback function called when code changed.
+
+### `canPasteCode?: boolean`
+
+Enable paste support. Default `false`
 
 ### `autoFocus?: boolean`
 
@@ -60,13 +61,6 @@ Length of confirmation code -> number of cells. Default `5`
 
 Default code value, must be the same length as `codeLength`
 
-### `compareWithCode?: string`
-
-Code to compare. if `null`, `onFulfill` callback return inputted code to check later
-
-### `ignoreCaseWhenCompareCode?: boolean`
-
-Ignore case when checking code. Default `false`
 
 ## Style props
 
