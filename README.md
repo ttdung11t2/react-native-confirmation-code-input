@@ -23,6 +23,14 @@ yarn add react-native-confirmation-code-field
 npm install react-native-confirmation-code-field
 ```
 
+### Also you can try the [beta version](https://github.com/retyui/react-native-confirmation-code-field/tree/beta). [What new in next version?](CHANGELOG.md)
+
+```sh
+yarn add react-native-confirmation-code-field@beta
+# or
+npm install react-native-confirmation-code-field@beta
+```
+
 ## Usage
 
 ```js
