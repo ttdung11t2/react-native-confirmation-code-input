@@ -15,8 +15,6 @@ declare module 'react-native-confirmation-code-field' {
   interface ConfirmationCodeInputProps {
     codeLength?: number;
     defaultCode?: string;
-    compareWithCode?: string;
-    ignoreCaseWhenCompareCode?: boolean;
 
     activeColor?: string;
     cellBorderWidth?: number;
@@ -29,8 +27,9 @@ declare module 'react-native-confirmation-code-field' {
     maskSymbol?: string,
 
     autoFocus?: boolean;
-    // isMatching will be true|false when "compareWithCode" prop isn't empty string
-    onFulfill: (code: string, isMatching?: boolean) => void;
+    canPasteCode?: boolean,
+
+    onFulfill: (code: string) => void;
     onChangeCode?: (code: string) => void;
 
     getInputProps?: (index: INDEX) => ReactNative.TextInputProps;

@@ -2,18 +2,6 @@
 
 import type { InputPositions, VariantNames } from './types';
 
-export const isMatchingCode = (
-  code: string,
-  compareWithCode: string,
-  ignoreCase: boolean,
-): boolean => {
-  if (ignoreCase) {
-    return code.toLowerCase() === compareWithCode.toLowerCase();
-  }
-
-  return code === compareWithCode;
-};
-
 export const getInputSpaceStyle = (
   space: number,
   inputPosition: InputPositions,

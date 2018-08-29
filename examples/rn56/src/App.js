@@ -9,6 +9,7 @@ import PositionDemo from './propsDemos/InputPosition';
 import SizeDemo from './propsDemos/Size';
 import SpaceDemo from './propsDemos/Space';
 import VariantDemo from './propsDemos/Variant';
+import TestPaste from './propsDemos/TestPaste';
 
 import RedExample from './realDemo/RedExample';
 import DarkExample from './realDemo/DarkExample';
@@ -20,6 +21,7 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
+          <TestPaste />
           <MaskSymbol />
           <ActiveColorDemo />
           <InactiveColorDemo />

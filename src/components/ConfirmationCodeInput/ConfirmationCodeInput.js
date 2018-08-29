@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { View, TextInput as TextInputNative, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { getClassStyle, getInputSpaceStyle, isMatchingCode } from '../../utils';
+import { getClassStyle, getInputSpaceStyle } from '../../utils';
 import TextInput from '../TextInput';
 import { getContainerStyle, styles } from './styles';
 import { validateCompareCode, validateInputProps } from './validation';
@@ -151,48 +151,53 @@ export default class ConfirmationCodeInput extends PureComponent<
     return index === this.props.codeLength - 1;
   }
 
-  onInputCode = (character: string, index: INDEX) => {
-    // on Android: text code is filled very slowly
-    if (!this.isLastIndex(index)) {
-      this.setFocus(this.state.currentIndex + 1);
-    }
+  normalizeNewCode(array: Array<string>): Array<string> {
+    const { codeLength } = this.props;
 
-    const {
-      onFulfill,
-      compareWithCode,
-      ignoreCaseWhenCompareCode,
-    } = this.props;
-    const { currentIndex, codeSymbols } = this.state;
-    const newCodeSymbols = [...codeSymbols];
+    const clearArray = array.filter(Boolean);
 
-    newCodeSymbols[index] = character;
-
-    if (this.isLastIndex(index)) {
-      const code = newCodeSymbols.join('');
-
-      if (compareWithCode) {
-        const isMatching = isMatchingCode(
-          code,
-          compareWithCode,
-          ignoreCaseWhenCompareCode,
-        );
-
-        onFulfill(code, isMatching);
-
-        if (isMatching) {
-          this.clear();
-        }
-      } else {
-        onFulfill(code);
+    // slice code when user paste long text
+    return new Array(codeLength).fill('').map((e, i) => {
+      if (clearArray[i]) {
+        return clearArray[i];
       }
 
-      this.blur(currentIndex);
+      return e;
+    });
+  }
+
+  getCurrentIndex(symbols: Array<string>): number {
+    // try holes in the array [1,2,3,'']
+    const index = symbols.findIndex(symbol => !symbol);
+
+    if (index === -1) {
+      return this.props.codeLength - 1;
     }
 
-    this.setState(prevState => ({
+    return index - 1;
+  }
+
+  // on Android: calling onChangeText very slowly
+  handlerOnChangeText = (text: string, index: INDEX) => {
+    const { codeSymbols } = this.state;
+    const newCodeSymbols = this.normalizeNewCode([...codeSymbols, ...text]);
+    const currentIndex = this.getCurrentIndex(newCodeSymbols);
+
+    this.setState({
       codeSymbols: newCodeSymbols,
-      currentIndex: prevState.currentIndex + 1,
-    }));
+      currentIndex: currentIndex + 1,
+    });
+
+    if (!this.isLastIndex(currentIndex)) {
+      this.setFocus(currentIndex + 1);
+    } else {
+      const { onFulfill } = this.props;
+      const code = newCodeSymbols.join('');
+
+      this.blur(index);
+
+      onFulfill(code);
+    }
   };
 
   codeInputRefs: Array<{ blur: () => void, focus: () => void }> = [];
@@ -255,13 +260,21 @@ export default class ConfirmationCodeInput extends PureComponent<
             ? getInputStyle(index, currentIndex === index, Boolean(value))
             : null,
         ]}
-        // fix for emoji  '😂'.length // 2
-        maxLength={finalValue ? finalValue.length : 1}
-        onChangeText={this.onInputCode}
+        maxLength={this.calculateMaxLength(finalValue)}
+        onChangeText={this.handlerOnChangeText}
         onFocus={this.handlerOnFocus}
         onKeyPress={this.onKeyPress}
       />
     );
+  }
+
+  calculateMaxLength(value: string): number {
+    if (this.props.canPasteCode) {
+      return this.props.codeLength;
+    }
+
+    // fix for emoji  'ð'.length // 2
+    return value ? value.length : 1;
   }
 
   render() {
@@ -288,11 +301,9 @@ export default class ConfirmationCodeInput extends PureComponent<
     autoFocus: PropTypes.bool,
     cellBorderWidth: PropTypes.number,
     codeLength: PropTypes.number,
-    compareWithCode: validateCompareCode,
     containerProps: PropTypes.object,
     defaultCode: validateCompareCode,
     getInputProps: PropTypes.func,
-    ignoreCaseWhenCompareCode: PropTypes.bool,
     inactiveColor: PropTypes.string,
     inputPosition: PropTypes.oneOf(['center', 'left', 'right', 'full-width']),
     onChangeCode: PropTypes.func,
@@ -316,11 +327,9 @@ export default class ConfirmationCodeInput extends PureComponent<
     autoFocus: false,
     cellBorderWidth: 1,
     codeLength: 5,
-    compareWithCode: null,
     containerProps: {},
     defaultCode: null,
     getInputProps: null,
-    ignoreCaseWhenCompareCode: false,
     inactiveColor: '#ffffff40',
     inputPosition: 'center',
     onChangeCode: null,
@@ -329,5 +338,6 @@ export default class ConfirmationCodeInput extends PureComponent<
     variant: 'border-box',
     keyboardType: 'default',
     maskSymbol: null,
+    canPasteCode: false,
   };
 }
