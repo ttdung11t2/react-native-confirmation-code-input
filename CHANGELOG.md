@@ -1,9 +1,15 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.0-beta.0
+
+* Remove `ignoreCaseWhenCompareCode` and `compareWithCode` props.
+* Add paste support. By default it's disabled. That would enable set `canPasteCode={true}`
+
+
 ## 1.2.0
  
-* Add new prop `maskSymbol?: string` [#5](https://github.com/retyui/react-native-confirmation-code-field/pull/5)
+* Add new prop `maskSymbol?: string` [#6](https://github.com/retyui/react-native-confirmation-code-field/issues/6)
 
 ## 1.1.0
 * Add `keyboardType` prop [#4](https://github.com/retyui/react-native-confirmation-code-field/pull/4)
