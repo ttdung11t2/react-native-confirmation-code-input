@@ -2,7 +2,7 @@
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.2.1
-* Add export for types
+* Add export for types [#10](https://github.com/retyui/react-native-confirmation-code-field/pull/10)
 
 ## 2.0.0-beta.0
 
