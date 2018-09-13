@@ -24,6 +24,7 @@ node_modules/react-native/flow-github/
 [options]
 emoji=true
 
+esproposal.optional_chaining=enable
 module.system=haste
 module.system.haste.use_name_reducers=true
 # get basename
