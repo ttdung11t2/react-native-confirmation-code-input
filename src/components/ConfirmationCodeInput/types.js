@@ -1,8 +1,13 @@
 // @flow
+import type { SyntheticEvent } from 'react-native/Libraries/Types/CoreEventTypes';
 import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
 import type { ViewProps } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
-import type { VariantNames, INDEX, InputPositions } from '../../types';
+import type { VariantNames, InputPositions } from '../../types';
+
+export type KeyPressEvent = SyntheticEvent<{|
+  +key: string,
+|}>;
 
 export type Props = $ReadOnly<{|
   codeLength?: number,
@@ -24,13 +29,9 @@ export type Props = $ReadOnly<{|
   onFulfill: (code: string) => void,
   onChangeCode?: (code: string) => void,
 
-  getInputProps?: (index: INDEX) => Object,
-  // help set custom style to any inputs
-  getInputStyle?: (
-    index: INDEX,
-    isFocused: boolean,
-    hasValue: boolean,
-  ) => Object,
+  inputProps?: (index: number) => Object,
+  // Help set a custom style to any inputs
+  inputStyle?: (index: number, isFocused: boolean, hasValue: boolean) => Object,
   containerProps?: ViewProps,
 
   testID?: any,

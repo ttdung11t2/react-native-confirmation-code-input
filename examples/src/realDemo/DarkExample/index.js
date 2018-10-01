@@ -33,14 +33,14 @@ export default class DarkExample extends Component {
     this.codeInputRef.current.clear();
   };
 
-  getInputStyle = (index, isActive, hasValue) => {
+  inputStyle = (index, isActive, hasValue) => {
     if (hasValue) {
       return styles.inputNotEmpty;
     }
     return null;
   };
 
-  getInputProps = () => ({
+  inputProps = () => ({
     keyboardType: 'numeric',
     style: styles.input,
   });
@@ -72,8 +72,8 @@ export default class DarkExample extends Component {
             inputPosition="full-width"
             variant="clear"
             codeLength={4}
-            getInputProps={this.getInputProps}
-            getInputStyle={this.getInputStyle}
+            inputProps={this.inputProps}
+            inputStyle={this.inputStyle}
             containerProps={DarkExample.containerProps}
             onFulfill={this.onFinishCheckingCode}
           />

@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as ReactNative from 'react-native';
 
 declare module 'react-native-confirmation-code-field' {
-  export type INDEX = number;
   export type InputPositions = 'left' | 'right' | 'center' | 'full-width';
   export type VariantNames =
     | 'border-box'
@@ -23,19 +22,19 @@ declare module 'react-native-confirmation-code-field' {
     size?: number;
     space?: number;
     variant?: VariantNames;
-    keyboardType?: ReactNative.KeyboardTypeOptions,
-    maskSymbol?: string,
+    keyboardType?: ReactNative.KeyboardTypeOptions;
+    maskSymbol?: string;
 
     autoFocus?: boolean;
-    canPasteCode?: boolean,
+    canPasteCode?: boolean;
 
     onFulfill: (code: string) => void;
     onChangeCode?: (code: string) => void;
 
-    getInputProps?: (index: INDEX) => ReactNative.TextInputProps;
-    // help set custom style to any inputs
-    getInputStyle?: (
-      index: INDEX,
+    inputProps?: (index: number) => ReactNative.TextInputProps;
+    // Help set a custom style to any inputs
+    inputStyle?: (
+      index: number,
       isFocused: boolean,
       hasValue: boolean,
     ) => Object;
@@ -48,6 +47,6 @@ declare module 'react-native-confirmation-code-field' {
     ConfirmationCodeInputProps,
     any
   > {
-      clear(): void;
+    clear(): void;
   }
 }

@@ -25,14 +25,14 @@ export default class RedExample extends Component {
     });
   };
 
-  getInputStyle = (index, isActive, hasValue) => {
+  inputStyle = (index, isActive, hasValue) => {
     if (hasValue) {
       return styles.inputNotEmpty;
     }
     return null;
   };
 
-  getInputProps = () => ({
+  inputProps = () => ({
     keyboardType: 'numeric',
     style: styles.input,
   });
@@ -53,8 +53,8 @@ export default class RedExample extends Component {
             variant="clear"
             codeLength={6}
             compareWithCode="123456"
-            getInputProps={this.getInputProps}
-            getInputStyle={this.getInputStyle}
+            inputProps={this.inputProps}
+            inputStyle={this.inputStyle}
             containerProps={this.containerProps}
             onFulfill={this.onFinishCheckingCode}
           />

@@ -1,18 +1,17 @@
 // @flow
+import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { View, TextInput as TextInputNative, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
-import { getClassStyle, getInputSpaceStyle } from '../../utils';
 import TextInput from '../TextInput';
+import { getClassStyle, getInputSpaceStyle } from '../../utils';
 import { getContainerStyle, styles } from './styles';
 import { validateCompareCode, validateInputProps } from './validation';
 
-import type { SyntheticEvent } from 'react-native/Libraries/Types/CoreEventTypes';
-import type { VariantNames, INDEX } from '../../types';
-import type { Props, State } from './types';
+import type { Props, State, KeyPressEvent } from './types';
+import type { VariantNames } from '../../types';
 
-// eslint-disable-next-line
+// eslint-disable-next-line no-use-before-define
 type DP = typeof ConfirmationCodeInput.defaultProps;
 
 const getDefaultCodeSymbols: number => Array<string> = codeLength =>
@@ -68,7 +67,7 @@ export default class ConfirmationCodeInput extends PureComponent<
 
   detectFirstFocus: boolean = false;
 
-  handlerOnFocus = (index: INDEX) => {
+  handlerOnFocus = (index: number) => {
     const newCodeArr = [...this.state.codeSymbols];
     const currentEmptyIndex = newCodeArr.findIndex(c => !c);
 
@@ -114,40 +113,17 @@ export default class ConfirmationCodeInput extends PureComponent<
     });
   }
 
-  static IOS_MINIMAL_DELAY = 20;
-
-  lastKeyEventTimestamp: number = 0;
-
-  onKeyPress = (e: SyntheticEvent<*>) => {
-    if (e.nativeEvent.key === 'Backspace') {
-      /**
-       * Due to a bug in RN iOS TextInput implementation, an unwanted backspace
-       * event is fired on key press after clearing out the text input.
-       * Typically this backspace event follows the actual event
-       * and the time duration is under 10ms.
-       * Added a check to see if we receive a backspace event under ~20ms
-       * after the last key press event. If found, do nothing.
-       *
-       * Bug link: https://github.com/facebook/react-native/issues/18374
-       */
-      if (
-        Math.abs(this.lastKeyEventTimestamp - e.timeStamp) <
-        ConfirmationCodeInput.IOS_MINIMAL_DELAY
-      ) {
-        return;
-      }
-
-      const { currentIndex } = this.state;
-      const nextIndex = currentIndex > 0 ? currentIndex - 1 : 0;
-
-      this.setFocus(nextIndex);
-    } else {
-      // Record non-backspace key event time stamp
-      this.lastKeyEventTimestamp = e.timeStamp;
+  onKeyPress = (e: KeyPressEvent) => {
+    if (e.nativeEvent.key !== 'Backspace') {
+      return;
     }
+    const { currentIndex } = this.state;
+    const nextIndex = currentIndex > 0 ? currentIndex - 1 : 0;
+
+    this.setFocus(nextIndex);
   };
 
-  isLastIndex(index: INDEX): boolean {
+  isLastIndex(index: number): boolean {
     return index === this.props.codeLength - 1;
   }
 
@@ -156,7 +132,7 @@ export default class ConfirmationCodeInput extends PureComponent<
 
     const clearArray = array.filter(Boolean);
 
-    // slice code when user paste long text
+    // Slice code when user paste long text
     return new Array(codeLength).fill('').map((e, i) => {
       if (clearArray[i]) {
         return clearArray[i];
@@ -167,7 +143,7 @@ export default class ConfirmationCodeInput extends PureComponent<
   }
 
   getCurrentIndex(symbols: Array<string>): number {
-    // try holes in the array [1,2,3,'']
+    // Try holes in the array [1,2,3,'']
     const index = symbols.findIndex(symbol => !symbol);
 
     if (index === -1) {
@@ -177,8 +153,7 @@ export default class ConfirmationCodeInput extends PureComponent<
     return index - 1;
   }
 
-  // on Android: calling onChangeText very slowly
-  handlerOnChangeText = (text: string, index: INDEX) => {
+  handlerOnChangeText = (text: string, index: number) => {
     const { codeSymbols } = this.state;
 
     if (!this.props.canPasteCode) {
@@ -207,15 +182,15 @@ export default class ConfirmationCodeInput extends PureComponent<
 
   codeInputRefs: Array<{ blur: () => void, focus: () => void }> = [];
 
-  setFocus(index: INDEX) {
+  setFocus(index: number) {
     this.codeInputRefs[index].focus();
   }
 
-  blur(index: INDEX) {
+  blur(index: number) {
     this.codeInputRefs[index].blur();
   }
 
-  setInputRef = (ref: any, idx: INDEX) => {
+  setInputRef = (ref: any, idx: number) => {
     this.codeInputRefs[idx] = ref;
   };
 
@@ -225,18 +200,18 @@ export default class ConfirmationCodeInput extends PureComponent<
     return value ? maskSymbol || value.toString() : '';
   }
 
-  renderInput(value: string, index: INDEX) {
+  renderInput(value: string, index: number) {
     const {
-      getInputStyle,
+      inputStyle,
       autoFocus,
       variant,
       activeColor,
-      getInputProps,
+      inputProps,
       keyboardType,
     } = this.props;
     const { currentIndex } = this.state;
 
-    const customInputProps = getInputProps ? getInputProps(index) : null;
+    const customInputProps = inputProps ? inputProps(index) : null;
 
     if (process.env.NODE_ENV !== 'production') {
       validateInputProps(customInputProps);
@@ -261,8 +236,8 @@ export default class ConfirmationCodeInput extends PureComponent<
           this.styles.input,
           this.getClassStyle(variant, currentIndex === index),
           customInputProps && customInputProps.style,
-          getInputStyle
-            ? getInputStyle(index, currentIndex === index, Boolean(value))
+          typeof inputStyle === 'function'
+            ? inputStyle(index, currentIndex === index, Boolean(value))
             : null,
         ]}
         maxLength={this.calculateMaxLength(finalValue)}
@@ -278,7 +253,7 @@ export default class ConfirmationCodeInput extends PureComponent<
       return this.props.codeLength;
     }
 
-    // fix for emoji  'ð'.length // 2
+    // Fix for emoji  'ð'.length // 2
     return value ? value.length : 1;
   }
 
@@ -308,7 +283,8 @@ export default class ConfirmationCodeInput extends PureComponent<
     codeLength: PropTypes.number,
     containerProps: PropTypes.object,
     defaultCode: validateCompareCode,
-    getInputProps: PropTypes.func,
+    inputProps: PropTypes.func,
+    inputStyle: PropTypes.func,
     inactiveColor: PropTypes.string,
     inputPosition: PropTypes.oneOf(['center', 'left', 'right', 'full-width']),
     onChangeCode: PropTypes.func,
@@ -334,7 +310,8 @@ export default class ConfirmationCodeInput extends PureComponent<
     codeLength: 5,
     containerProps: {},
     defaultCode: null,
-    getInputProps: null,
+    inputProps: null,
+    inputStyle: null,
     inactiveColor: '#ffffff40',
     inputPosition: 'center',
     onChangeCode: null,

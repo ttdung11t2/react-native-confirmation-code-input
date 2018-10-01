@@ -23,7 +23,7 @@ const render = props =>
   shallow(<ConfirmationCodeInput {...defaultProps} {...props} />);
 
 describe('onKeyPress', () => {
-  test("must do nothing whrn key code isn't Backspace", () => {
+  test("must do nothing when key code isn't Backspace", () => {
     const wrap = render();
     const event = {
       nativeEvent: {
@@ -105,7 +105,7 @@ test('must assign custom props to TextInput', () => {
     a: 'b',
     b: 'a',
   };
-  const getInputProps = jest.fn(() => ({
+  const inputProps = jest.fn(() => ({
     ...overWrittenProps,
     ...willBeAssigned,
   }));
@@ -113,10 +113,10 @@ test('must assign custom props to TextInput', () => {
   const codeLength = 3;
   const wrap = render({
     codeLength,
-    getInputProps,
+    inputProps,
   });
 
-  expect(getInputProps).toHaveBeenCalledTimes(codeLength);
+  expect(inputProps).toHaveBeenCalledTimes(codeLength);
 
   const props = wrap
     .find(TextInput)
@@ -194,19 +194,19 @@ test('must call onFulfill and blur from last input when the code is full', () =>
   expect(blur).toHaveBeenCalledWith(index2);
 });
 
-test('must call getInputStyle', () => {
-  const getInputStyle = jest.fn();
+test('must call inputStyle', () => {
+  const inputStyle = jest.fn();
   const codeLength = 4;
 
   render({
-    getInputStyle,
+    inputStyle,
     codeLength,
   });
 
-  expect(getInputStyle).toHaveBeenCalledTimes(codeLength);
-  expect(getInputStyle).toHaveBeenCalledWith(1, false, false);
-  expect(getInputStyle).toHaveBeenCalledWith(2, false, false);
-  expect(getInputStyle).toHaveBeenCalledWith(3, false, false);
+  expect(inputStyle).toHaveBeenCalledTimes(codeLength);
+  expect(inputStyle).toHaveBeenCalledWith(1, false, false);
+  expect(inputStyle).toHaveBeenCalledWith(2, false, false);
+  expect(inputStyle).toHaveBeenCalledWith(3, false, false);
 });
 
 describe('onFocus', () => {
