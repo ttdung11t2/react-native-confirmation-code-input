@@ -2,21 +2,9 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.0.0-beta.1
-
-- New example for RN 0.57 version
-- Merged cnages from `1.2.1` version
-- Update dependencies
-  > RN@0.57 - Fixed extreme `<TextInput>` slowness ([5017b86](https://github.com/facebook/react-native/commit/5017b86) by [@gnprice](https://github.com/gnprice))
-
 ## 1.2.1
 
 - Add export for types [#10](https://github.com/retyui/react-native-confirmation-code-field/pull/10)
-
-## 2.0.0-beta.0
-
-- Remove `ignoreCaseWhenCompareCode` and `compareWithCode` props.
-- Add paste support. By default it's disabled. That would enable set `canPasteCode={true}`
 
 ## 1.2.0
 

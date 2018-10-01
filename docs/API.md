@@ -4,7 +4,7 @@
 
 - [API](#api)
   - [Base props](#base-props)
-    - [`onFulfill: (code: string, isMatching: ?boolean) => void`](#onfulfill-code-string-ismatching-boolean--void)
+    - [`onFulfill: (code: string, isMatching?: boolean) => void`](#onfulfill-code-string-ismatching-boolean--void)
     - [`onChangeCode?: (code: string) => void`](#onchangecode-code-string--void)
     - [`autoFocus?: boolean`](#autofocus-boolean)
     - [`codeLength?: number`](#codelength-number)
@@ -36,7 +36,7 @@
 
 ## Base props
 
-### `onFulfill: (code: string, isMatching: ?boolean) => void`
+### `onFulfill: (code: string, isMatching?: boolean) => void`
 
 Callback function called when fulfilling code.
 
