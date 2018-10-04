@@ -26,11 +26,11 @@ npm install react-native-confirmation-code-input --save
 
 ## Usage
 ### Basic
-Import this module:  
+Import this module:
 ```javascript
 import CodeInput from 'react-native-confirmation-code-input';
 ```
-Use as a component and style it:  
+Use as a component and style it:
 ```javascript
 
 render() {
@@ -44,7 +44,7 @@ render() {
       inputPosition='left'
       onFulfill={(code) => this._onFulfill(code)}
     />
-    
+
     <CodeInput
       ref="codeInputRef2"
       secureTextEntry
@@ -59,7 +59,7 @@ render() {
       containerStyle={{ marginTop: 30 }}
       codeInputStyle={{ borderWidth: 1.5 }}
     />
-    
+
     <CodeInput
       ref="codeInputRef2"
       keyboardType="numeric"
@@ -75,7 +75,7 @@ render() {
 ```
 
 ### props
-This component uses the same props as [<TextInput/>](https://facebook.github.io/react-native/docs/textinput.html). Below are additional props for this component:  
+This component uses the same props as [<TextInput/>](https://facebook.github.io/react-native/docs/textinput.html). Below are additional props for this component:
 
 Prop       | Type    | Default    | Description
 ---------- | ------- | ---------- | -----------------------
@@ -90,6 +90,7 @@ Prop       | Type    | Default    | Description
 `inactiveColor`     | string   | `rgba(255, 255, 255, 0.2)` | color of cells when inactive
 `ignoreCase`        | boolean  | `false`      | ignore case when checking code
 `autoFocus`         | boolean  | `true`       | auto focus on code input
+`blurOnFulfill`     | boolean  | `true`       | blur input when fulfilled
 `codeInputStyle`    | style object   |        | custom style for code input
 `containerStyle`    | style object   |        | custom style for code input container
 `onFulfill`         | function |              | callback function called when fulfilling code. If `compareWithCode` is null -> return `(code)` in callback, else return `(isValid, code)`. **Required**
@@ -99,7 +100,7 @@ clear input:
 ```javascript
 this.refs.refName.clear();
 ...
-<CodeInput 
+<CodeInput
     ...
     ref="refName"
 />
@@ -114,6 +115,6 @@ react-native run-ios / react-native run-android
 ```
 ## License
 
-react-native-confirmation-code-input is released under the MIT license. See [LICENSE](LICENSE) for details.  
-  
+react-native-confirmation-code-input is released under the MIT license. See [LICENSE](LICENSE) for details.
+
 Any question or support will welcome.
