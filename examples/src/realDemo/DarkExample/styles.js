@@ -4,7 +4,7 @@ export default StyleSheet.create({
   linearGradient: {
     paddingHorizontal: 20,
     paddingVertical: 30,
-    minHeight: 800,
+    minHeight: 555,
   },
 
   inputLabel: {

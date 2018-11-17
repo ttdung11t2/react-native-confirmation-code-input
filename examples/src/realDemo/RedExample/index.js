@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Text, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from '../../LinearGradient';
 
 import CodeFiled from 'react-native-confirmation-code-field';
 

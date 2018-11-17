@@ -2,7 +2,7 @@ import { StyleSheet, Platform } from 'react-native';
 
 export default StyleSheet.create({
   linearGradient: {
-    minHeight: 800,
+    minHeight: 555,
   },
   inputWrapper: {
     alignItems: 'center',

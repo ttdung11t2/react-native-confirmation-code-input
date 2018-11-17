@@ -20,6 +20,9 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
+          <RedExample />
+          <DarkExample />
+
           <MaskSymbol />
           <ActiveColorDemo />
           <InactiveColorDemo />
@@ -28,9 +31,6 @@ export default class App extends Component {
           <SizeDemo />
           <PositionDemo />
           <VariantDemo />
-
-          <RedExample />
-          <DarkExample />
         </ScrollView>
       </View>
     );
