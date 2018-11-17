@@ -23,7 +23,7 @@ const render = props =>
   shallow(<ConfirmationCodeInput {...defaultProps} {...props} />);
 
 describe('onKeyPress', () => {
-  test("must do nothing whrn key code isn't Backspace", () => {
+  test("must do nothing when key code isn't Backspace", () => {
     const wrap = render();
     const event = {
       nativeEvent: {
@@ -105,7 +105,7 @@ test('must assign custom props to TextInput', () => {
     a: 'b',
     b: 'a',
   };
-  const getInputProps = jest.fn(() => ({
+  const inputProps = jest.fn(() => ({
     ...overWrittenProps,
     ...willBeAssigned,
   }));
@@ -113,10 +113,10 @@ test('must assign custom props to TextInput', () => {
   const codeLength = 3;
   const wrap = render({
     codeLength,
-    getInputProps,
+    inputProps,
   });
 
-  expect(getInputProps).toHaveBeenCalledTimes(codeLength);
+  expect(inputProps).toHaveBeenCalledTimes(codeLength);
 
   const props = wrap
     .find(TextInput)
@@ -194,77 +194,19 @@ test('must call onFulfill and blur from last input when the code is full', () =>
   expect(blur).toHaveBeenCalledWith(index2);
 });
 
-test('must call getInputStyle', () => {
-  const getInputStyle = jest.fn();
+test('must call inputStyle', () => {
+  const inputStyle = jest.fn();
   const codeLength = 4;
 
   render({
-    getInputStyle,
+    inputStyle,
     codeLength,
   });
 
-  expect(getInputStyle).toHaveBeenCalledTimes(codeLength);
-  expect(getInputStyle).toHaveBeenCalledWith(1, false, false);
-  expect(getInputStyle).toHaveBeenCalledWith(2, false, false);
-  expect(getInputStyle).toHaveBeenCalledWith(3, false, false);
-});
-
-describe('compareWithCode', () => {
-  test('must compare code with compareWithCode', () => {
-    const onFulfill = jest.fn();
-    const compareWithCode = 'a';
-    const wrap = render({
-      codeLength: 1,
-      onFulfill,
-      compareWithCode,
-    });
-
-    // fix undefined ref
-    spy(wrap, 'setFocus');
-    spy(wrap, 'blur');
-
-    const [index, text] = [0, 'A'];
-
-    wrap
-      .find(TextInput)
-      .get(index)
-      .props.onChangeText(text, index);
-
-    const isMatching = text === compareWithCode;
-
-    expect(onFulfill).toHaveBeenCalledTimes(1);
-    expect(onFulfill).toHaveBeenCalledWith(`${text}`, isMatching);
-  });
-
-  test('must call clear when isMatching', () => {
-    const onFulfill = jest.fn();
-    const compareWithCode = 'a';
-    const wrap = render({
-      codeLength: 1,
-      onFulfill,
-      compareWithCode,
-    });
-
-    const clear = spy(wrap, 'clear');
-
-    // fix undefined ref
-    spy(wrap, 'setFocus');
-    spy(wrap, 'blur');
-
-    const [index, text] = [0, 'a'];
-
-    wrap
-      .find(TextInput)
-      .get(index)
-      .props.onChangeText(text, index);
-
-    const isMatching = text === compareWithCode;
-
-    expect(onFulfill).toHaveBeenCalledTimes(1);
-    expect(onFulfill).toHaveBeenCalledWith(`${text}`, isMatching);
-
-    expect(clear).toHaveBeenCalledTimes(1);
-  });
+  expect(inputStyle).toHaveBeenCalledTimes(codeLength);
+  expect(inputStyle).toHaveBeenCalledWith(1, false, false);
+  expect(inputStyle).toHaveBeenCalledWith(2, false, false);
+  expect(inputStyle).toHaveBeenCalledWith(3, false, false);
 });
 
 describe('onFocus', () => {
@@ -358,5 +300,72 @@ describe('onFocus', () => {
     ).toBe(testResult);
 
     expect(setFocus).toHaveBeenCalledWith(2);
+  });
+});
+
+describe('canPasteCode', () => {
+  test('must fill all code when the user inserted the text equal or greater than the codeLength', () => {
+    const onFulfill = jest.fn();
+    const wrap = render({
+      codeLength: 4,
+      onFulfill,
+      canPasteCode: true,
+    });
+
+    const blur = spy(wrap, 'blur');
+
+    // fix undefined ref
+    spy(wrap, 'setFocus');
+
+    expect(wrap.state()).toEqual({
+      codeSymbols: ['', '', '', ''],
+      currentIndex: 0,
+    });
+
+    const [index, text] = [0, '123456'];
+
+    wrap
+      .find(TextInput)
+      .get(index)
+      .props.onChangeText(text, index);
+
+    expect(onFulfill).toHaveBeenCalledTimes(1);
+    expect(onFulfill).toHaveBeenCalledWith(`${text.slice(0, 4)}`);
+
+    expect(blur).toHaveBeenCalledTimes(1);
+    expect(blur).toHaveBeenCalledWith(index);
+  });
+  test('must fill one section of code input when canPasteCode=false and user inserted the text equal or greater than the codeLength', () => {
+    const onFulfill = jest.fn();
+    const wrap = render({
+      codeLength: 4,
+      onFulfill,
+      canPasteCode: false,
+    });
+
+    const blur = spy(wrap, 'blur');
+
+    // fix undefined ref
+    spy(wrap, 'setFocus');
+
+    expect(wrap.state()).toEqual({
+      codeSymbols: ['', '', '', ''],
+      currentIndex: 0,
+    });
+
+    const [index, text] = [0, '123456'];
+
+    wrap
+      .find(TextInput)
+      .get(index)
+      .props.onChangeText(text, index);
+
+    expect(onFulfill).toHaveBeenCalledTimes(0);
+    expect(blur).toHaveBeenCalledTimes(0);
+
+    expect(wrap.state()).toEqual({
+      codeSymbols: [text[0], '', '', ''],
+      currentIndex: 1,
+    });
   });
 });

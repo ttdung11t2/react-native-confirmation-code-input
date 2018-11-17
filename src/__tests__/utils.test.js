@@ -1,22 +1,4 @@
-import { getClassStyle, getInputSpaceStyle, isMatchingCode } from '../utils';
-
-describe('isMatchingCode', () => {
-  test('must return true when compared equal and ignoreCase=true', () => {
-    expect(isMatchingCode('a', 'A', true)).toBeTruthy();
-  });
-
-  test('must return false when compared equal and ignoreCase=false', () => {
-    expect(isMatchingCode('a', 'A', false)).toBeFalsy();
-  });
-
-  test('must return true when compared equal', () => {
-    expect(isMatchingCode('a', 'a')).toBeTruthy();
-  });
-
-  test("must return false when compared isn't equal", () => {
-    expect(isMatchingCode('a', 'A')).toBeFalsy();
-  });
-});
+import { getClassStyle, getInputSpaceStyle } from '../utils';
 
 describe('getInputSpaceStyle', () => {
   test('must return default style', () => {

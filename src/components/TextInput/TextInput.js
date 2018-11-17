@@ -5,13 +5,11 @@ import { TextInput } from 'react-native';
 
 import { omit } from '../../omit';
 
-import type { INDEX } from '../../types';
-
 type Props = {
-  +id: INDEX,
-  +onChangeText: (string, INDEX) => void,
-  +onFocus: INDEX => void,
-  +forwardRef: (?TextInput, INDEX) => void,
+  +id: number,
+  +onChangeText: (string, number) => void,
+  +onFocus: number => void,
+  +forwardRef: (?TextInput, number) => void,
 };
 
 export default class TextInputCustom extends Component<Props> {

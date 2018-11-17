@@ -1,4 +1,4 @@
-## All examples are here [`./src`](src/)
+## All examples are here [`./src`](../src/)
 
 ## Usage:
 

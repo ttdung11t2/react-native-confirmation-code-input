@@ -1,7 +1,5 @@
 // @flow
 
-export type INDEX = number;
-
 export type InputPositions = 'left' | 'right' | 'center' | 'full-width';
 
 export type VariantNames =

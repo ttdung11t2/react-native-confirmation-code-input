@@ -4,13 +4,12 @@
 
 - [API](#api)
   - [Base props](#base-props)
-    - [`onFulfill: (code: string, isMatching?: boolean) => void`](#onfulfill-code-string-ismatching-boolean--void)
+    - [`onFulfill: (code: string) => void`](#onfulfill-code-string--void)
     - [`onChangeCode?: (code: string) => void`](#onchangecode-code-string--void)
+    - [`canPasteCode?: boolean`](#canpastecode-boolean)
     - [`autoFocus?: boolean`](#autofocus-boolean)
     - [`codeLength?: number`](#codelength-number)
     - [`defaultCode?: string`](#defaultcode-string)
-    - [`compareWithCode?: string`](#comparewithcode-string)
-    - [`ignoreCaseWhenCompareCode?: boolean`](#ignorecasewhencomparecode-boolean)
   - [Style props](#style-props)
     - [`maskSymbol:? string`](#masksymbol-string)
     - [`keyboardType:? KeyboardType`](#keyboardtype-keyboardtype)
@@ -24,7 +23,7 @@
   - [Customize props](#customize-props)
     - [`containerProps?: Object`](#containerprops-object)
     - [`getInputStyle?: (index: number, isFocused: boolean, hasValue: boolean) => Object`](#getinputstyle-index-number-isfocused-boolean-hasvalue-boolean--object)
-    - [`getInputProps?: (index: number) => Object`](#getinputprops-index-number--object)
+    - [`inputProps?: (index: number) => Object`](#inputprops-index-number--object)
   - [Other props](#other-props)
     - [`testID?: any`](#testid-any)
   - [Functions](#functions)
@@ -36,17 +35,19 @@
 
 ## Base props
 
-### `onFulfill: (code: string, isMatching?: boolean) => void`
+### `onFulfill: (code: string) => void`
 
 Callback function called when fulfilling code.
-
-If `compareWithCode` is null -> return `(code)` in callback, else return `(code, isValid)`.
 
 **Required**
 
 ### `onChangeCode?: (code: string) => void`
 
 Callback function called when code changed.
+
+### `canPasteCode?: boolean`
+
+Enable paste support. Default `false`
 
 ### `autoFocus?: boolean`
 
@@ -60,23 +61,13 @@ Length of confirmation code -> number of cells. Default `5`
 
 Default code value, must be the same length as `codeLength`
 
-### `compareWithCode?: string`
-
-Code to compare. if `null`, `onFulfill` callback return inputted code to check later
-
-### `ignoreCaseWhenCompareCode?: boolean`
-
-Ignore case when checking code. Default `false`
-
 ## Style props
-
 
 ### `maskSymbol:? string`
 
 A symbol that will be displayed when the field is filled. Supports emoji.
 
 <img width="400" src="https://raw.githubusercontent.com/retyui/react-native-confirmation-code-field/master/docs/img/maskSymbol.jpg"/>
-
 
 ### `keyboardType:? KeyboardType`
 
@@ -138,7 +129,7 @@ Some built-in variants. Default `border-box`. [Demo `variant`:](examples/rn56/sr
 
 Help customize any input, must return [Style Object](https://facebook.github.io/react-native/docs/textinput#style) or `null`. [example](https://github.com/retyui/react-native-confirmation-code-field/blob/master/examples/rn56/src/realDemo/DarkExample/index.js#L36-L41)
 
-### `getInputProps?: (index: number) => Object`
+### `inputProps?: (index: number) => Object`
 
 [`<TextInput/>` component props](https://facebook.github.io/react-native/docs/textinput#props)
 
