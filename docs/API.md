@@ -1,7 +1,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [API](#api)
   - [Base props](#base-props)
     - [`onFulfill: (code: string) => void`](#onfulfill-code-string--void)
@@ -61,16 +60,13 @@ Length of confirmation code -> number of cells. Default `5`
 
 Default code value, must be the same length as `codeLength`
 
-
 ## Style props
-
 
 ### `maskSymbol:? string`
 
 A symbol that will be displayed when the field is filled. Supports emoji.
 
 <img width="400" src="https://raw.githubusercontent.com/retyui/react-native-confirmation-code-field/master/docs/img/maskSymbol.jpg"/>
-
 
 ### `keyboardType:? KeyboardType`
 

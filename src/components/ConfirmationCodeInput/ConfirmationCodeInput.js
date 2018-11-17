@@ -22,6 +22,7 @@ export default class ConfirmationCodeInput extends PureComponent<
   State,
 > {
   styles: Object;
+  isCustomFocus: boolean = false;
 
   constructor(...args: any) {
     super(...args);
@@ -68,6 +69,10 @@ export default class ConfirmationCodeInput extends PureComponent<
   detectFirstFocus: boolean = false;
 
   handlerOnFocus = (index: number) => {
+    if (this.isCustomFocus) {
+      return;
+    }
+
     const newCodeArr = [...this.state.codeSymbols];
     const currentEmptyIndex = newCodeArr.findIndex(c => !c);
 
@@ -183,7 +188,9 @@ export default class ConfirmationCodeInput extends PureComponent<
   codeInputRefs: Array<{ blur: () => void, focus: () => void }> = [];
 
   setFocus(index: number) {
+    this.isCustomFocus = true;
     this.codeInputRefs[index].focus();
+    this.isCustomFocus = false;
   }
 
   blur(index: number) {
