@@ -22,7 +22,7 @@ export default class ConfirmationCodeInput extends PureComponent<
   State,
 > {
   styles: Object;
-  isCustomFocus: boolean = false;
+  ignoreOnFocusHandler: boolean = false;
 
   constructor(...args: any) {
     super(...args);
@@ -69,7 +69,7 @@ export default class ConfirmationCodeInput extends PureComponent<
   detectFirstFocus: boolean = false;
 
   handlerOnFocus = (index: number) => {
-    if (this.isCustomFocus) {
+    if (this.ignoreOnFocusHandler) {
       return;
     }
 
@@ -159,6 +159,12 @@ export default class ConfirmationCodeInput extends PureComponent<
   }
 
   handlerOnChangeText = (text: string, index: number) => {
+    // Fix for react-native-web
+    // Skip onChange when text deleted, onKeyPress must handled the behavior
+    if (!text) {
+      return;
+    }
+
     const { codeSymbols } = this.state;
 
     if (!this.props.canPasteCode) {
@@ -181,6 +187,9 @@ export default class ConfirmationCodeInput extends PureComponent<
 
       onFulfill(code);
     } else {
+      // Skip processing onFocus that changes state
+      this.ignoreOnFocusHandler = true;
+
       this.setFocus(currentIndex + 1);
     }
   };
@@ -188,9 +197,8 @@ export default class ConfirmationCodeInput extends PureComponent<
   codeInputRefs: Array<{ blur: () => void, focus: () => void }> = [];
 
   setFocus(index: number) {
-    this.isCustomFocus = true;
     this.codeInputRefs[index].focus();
-    this.isCustomFocus = false;
+    this.ignoreOnFocusHandler = false;
   }
 
   blur(index: number) {
