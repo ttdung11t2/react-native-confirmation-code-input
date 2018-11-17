@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.1
+
+- Update TypeScript definition [changes](https://github.com/retyui/react-native-confirmation-code-field/commit/5e5bf0b9f912dc49bbfb5c7a24c78004374b089f#diff-b52768974e6bc0faccb7d4b75b162c99)
+
 ## 2.0.0
 
 - New example for RN 0.57 version
