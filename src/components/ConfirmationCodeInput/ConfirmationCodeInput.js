@@ -23,7 +23,7 @@ export default class ConfirmationCodeInput extends PureComponent<
   State,
 > {
   styles: Object;
-  isCustomFocus: boolean = false;
+  ignoreOnFocusHandler: boolean = false;
 
   constructor(...args: any) {
     super(...args);
@@ -70,7 +70,7 @@ export default class ConfirmationCodeInput extends PureComponent<
   detectFirstFocus: boolean = false;
 
   handlerOnFocus = (index: INDEX) => {
-    if (this.isCustomFocus) {
+    if (this.ignoreOnFocusHandler) {
       return;
     }
 
@@ -157,8 +157,18 @@ export default class ConfirmationCodeInput extends PureComponent<
   }
 
   onInputCode = (character: string, index: INDEX) => {
-    // on Android: text code is filled very slowly
+    // Fix for react-native-web
+    // Skip onChange when text deleted, onKeyPress must handled the behavior
+
+    if (!character) {
+      return;
+    }
+
+    // On Android: Text code is filled very slowly https://github.com/facebook/react-native/commit/5017b86
     if (!this.isLastIndex(index)) {
+      // Skip processing onFocus that changes state
+      this.ignoreOnFocusHandler = true;
+
       this.setFocus(this.state.currentIndex + 1);
     }
 
@@ -203,9 +213,8 @@ export default class ConfirmationCodeInput extends PureComponent<
   codeInputRefs: Array<{ blur: () => void, focus: () => void }> = [];
 
   setFocus(index: INDEX) {
-    this.isCustomFocus = true;
     this.codeInputRefs[index].focus();
-    this.isCustomFocus = false;
+    this.ignoreOnFocusHandler = false;
   }
 
   blur(index: INDEX) {
