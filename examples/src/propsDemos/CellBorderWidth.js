@@ -4,7 +4,7 @@ import CodeFiled from 'react-native-confirmation-code-field';
 
 import styles from '../commonStyles';
 
-export default function ActiveColor() {
+export default function CellBorderWidth() {
   return (
     <View style={styles.rootView}>
       <Text style={styles.typing}>cellBorderWidth?: number</Text>

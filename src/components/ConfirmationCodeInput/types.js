@@ -10,29 +10,36 @@ export type KeyPressEvent = SyntheticEvent<{|
 |}>;
 
 export type Props = $ReadOnly<{|
-  codeLength?: number,
-  defaultCode?: string,
-
-  activeColor?: string,
-  cellBorderWidth?: number,
-  inactiveColor?: string,
-  inputPosition?: InputPositions,
-  size?: number,
-  space?: number,
-  variant?: VariantNames,
-  keyboardType?: KeyboardType,
-  maskSymbol?: string,
-
-  autoFocus?: boolean,
-  canPasteCode?: boolean,
-
+  // Required props
   onFulfill: (code: string) => void,
-  onChangeCode?: (code: string) => void,
 
-  inputProps?: (index: number) => Object,
+  // Not required props (rewritten in defaultProps)
+  codeLength: number,
+  defaultCode: ?string,
+
+  activeColor: string,
+  cellBorderWidth: number,
+  inactiveColor: string,
+  inputPosition: InputPositions,
+  size: number,
+  space: number,
+  variant: VariantNames,
+  keyboardType: KeyboardType,
+  maskSymbol: ?string,
+
+  autoFocus: boolean,
+  canPasteCode: boolean,
+
+  onChangeCode: ?(code: string) => void,
+
+  inputProps: ?(index: number) => Object,
   // Help set a custom style to any inputs
-  inputStyle?: (index: number, isFocused: boolean, hasValue: boolean) => Object,
-  containerProps?: ViewProps,
+  inputStyle: ?(
+    index: number,
+    isFocused: boolean,
+    hasValue: boolean,
+  ) => ?Object,
+  containerProps: ViewProps,
 
   testID?: any,
 |}>;

@@ -11,16 +11,10 @@ import { validateCompareCode, validateInputProps } from './validation';
 import type { Props, State, KeyPressEvent } from './types';
 import type { VariantNames } from '../../types';
 
-// eslint-disable-next-line no-use-before-define
-type DP = typeof ConfirmationCodeInput.defaultProps;
-
 const getDefaultCodeSymbols: number => Array<string> = codeLength =>
   new Array(codeLength).fill('');
 
-export default class ConfirmationCodeInput extends PureComponent<
-  $Diff<Props, DP> & $Shape<DP>,
-  State,
-> {
+export default class ConfirmationCodeInput extends PureComponent<Props, State> {
   static propTypes = {
     activeColor: PropTypes.string,
     autoFocus: PropTypes.bool,
