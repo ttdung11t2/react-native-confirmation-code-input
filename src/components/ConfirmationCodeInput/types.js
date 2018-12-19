@@ -1,13 +1,8 @@
 // @flow
-import type { SyntheticEvent } from 'react-native/Libraries/Types/CoreEventTypes';
 import type { KeyboardType } from 'react-native/Libraries/Components/TextInput/TextInput';
 import type { ViewProps } from 'react-native/Libraries/Components/View/ViewPropTypes';
 
 import type { VariantNames, InputPositions } from '../../types';
-
-export type KeyPressEvent = SyntheticEvent<{|
-  +key: string,
-|}>;
 
 export type Props = $ReadOnly<{|
   // Required props
@@ -28,25 +23,21 @@ export type Props = $ReadOnly<{|
   maskSymbol: ?string,
 
   autoFocus: boolean,
-  canPasteCode: boolean,
 
   onChangeCode: ?(code: string) => void,
 
-  inputProps: ?(index: number) => Object,
-  // Help set a custom style to any inputs
-  inputStyle: ?(
+  inputProps: Object,
+  cellProps: ({
     index: number,
     isFocused: boolean,
     hasValue: boolean,
-  ) => ?Object,
+  }) => ?Object,
   containerProps: ViewProps,
-
   testID?: any,
 |}>;
 
 export type State = {|
-  codeSymbols: Array<string>,
-  currentIndex: number,
+  codeValue: string,
 |};
 
 export type PropsTypeCustomValidatorFn = (

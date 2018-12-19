@@ -1,18 +1,21 @@
 // @flow
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { View, TextInput as TextInputNative, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 
+import Text from '../Text';
 import TextInput from '../TextInput';
-import { getClassStyle, getInputSpaceStyle } from '../../utils';
-import { getContainerStyle, styles } from './styles';
-import { validateCompareCode, validateInputProps } from './validation';
+import createRef from '../../createRef';
+import { concatStyles } from '../../styles';
 
-import type { Props, State, KeyPressEvent } from './types';
-import type { VariantNames } from '../../types';
+import { getCellStyle, getContainerStyle, styles } from './styles';
+import { validateCompareCode } from './validation';
 
-const getDefaultCodeSymbols: number => Array<string> = codeLength =>
-  new Array(codeLength).fill('');
+import type { Props, State } from './types';
+import type {
+  LayoutEvent,
+  PressEvent,
+} from 'react-native/Libraries/Types/CoreEventTypes';
 
 export default class ConfirmationCodeInput extends PureComponent<Props, State> {
   static propTypes = {
@@ -23,7 +26,6 @@ export default class ConfirmationCodeInput extends PureComponent<Props, State> {
     containerProps: PropTypes.object,
     defaultCode: validateCompareCode,
     inputProps: PropTypes.func,
-    inputStyle: PropTypes.func,
     inactiveColor: PropTypes.string,
     inputPosition: PropTypes.oneOf(['center', 'left', 'right', 'full-width']),
     onChangeCode: PropTypes.func,
@@ -34,11 +36,9 @@ export default class ConfirmationCodeInput extends PureComponent<Props, State> {
       'border-box',
       'border-circle',
       'border-b',
-      'border-b-t',
-      'border-l-r',
       'clear',
     ]),
-    keyboardType: TextInputNative.propTypes.keyboardType,
+    keyboardType: TextInput.propTypes.keyboardType,
     maskSymbol: PropTypes.string,
   };
 
@@ -48,8 +48,8 @@ export default class ConfirmationCodeInput extends PureComponent<Props, State> {
     cellBorderWidth: 1,
     codeLength: 5,
     containerProps: {},
-    defaultCode: null,
-    inputProps: null,
+    defaultCode: '',
+    inputProps: {},
     inputStyle: null,
     inactiveColor: '#ffffff40',
     inputPosition: 'center',
@@ -59,279 +59,183 @@ export default class ConfirmationCodeInput extends PureComponent<Props, State> {
     variant: 'border-box',
     keyboardType: 'default',
     maskSymbol: null,
-    canPasteCode: false,
   };
 
-  styles: Object;
+  input = createRef();
 
-  ignoreOnFocusHandler: boolean = false;
-
-  constructor(...args: any) {
-    super(...args);
-
-    const { defaultCode, codeLength, size } = this.props;
-
-    this.state = {
-      codeSymbols:
-        typeof defaultCode === 'string'
-          ? defaultCode.split('')
-          : getDefaultCodeSymbols(codeLength),
-      currentIndex: 0,
-    };
-
-    this.styles = StyleSheet.create({
-      input: {
-        width: size,
-        height: size,
-      },
-      container: { height: size },
-    });
-  }
-
-  onChangeCb = () => {
-    const { onChangeCode } = this.props;
-
-    if (onChangeCode) {
-      onChangeCode(this.state.codeSymbols.join(''));
-    }
+  state = {
+    codeValue: this.props.defaultCode
+      ? this.truncateString(this.props.defaultCode)
+      : '',
   };
+
+  cellsLayouts: {
+    [key: string]: {|
+      x: number,
+      y: number,
+      xEnd: number,
+      yEnd: number,
+    |},
+  } = {};
 
   clear() {
-    this.setState(
-      {
-        currentIndex: 0,
-        codeSymbols: getDefaultCodeSymbols(this.props.codeLength),
-      },
-      () => {
-        this.setFocus(0);
-      },
-    );
+    this.handlerOnTextChange('');
   }
 
-  detectFirstFocus: boolean = false;
+  handlerOnLayoutCell = (index: number, event: LayoutEvent) => {
+    const { width, x, y, height } = event.nativeEvent.layout;
 
-  handlerOnFocus = (index: number) => {
-    if (this.ignoreOnFocusHandler) {
-      return;
+    this.cellsLayouts[`${index}`] = { x, xEnd: x + width, y, yEnd: y + height };
+  };
+
+  renderCode = (codeSymbol: string, index: number) => {
+    const { cellProps, maskSymbol } = this.props;
+    const isActive = this.getCurrentIndex() === index;
+
+    let customProps = null;
+
+    if (cellProps) {
+      customProps = cellProps({
+        index,
+        isFocused: isActive,
+        hasValue: Boolean(codeSymbol),
+      });
     }
 
-    const newCodeArr = [...this.state.codeSymbols];
-    const currentEmptyIndex = newCodeArr.findIndex(c => !c);
+    return (
+      <Text
+        {...customProps}
+        key={index}
+        index={index}
+        onLayout={this.handlerOnLayoutCell}
+        style={concatStyles(
+          getCellStyle(this.props, { isActive }),
+          customProps && customProps.style,
+        )}
+      >
+        {codeSymbol ? maskSymbol || codeSymbol : ''}
+      </Text>
+    );
+  };
 
-    if (currentEmptyIndex !== -1 && currentEmptyIndex < index) {
-      return this.setFocus(currentEmptyIndex);
-    }
+  renderCodeCells() {
+    // $FlowFixMe
+    return this.getCodeSymbols().map(this.renderCode);
+  }
+
+  handlerOnTextChange = (text: string) => {
+    const codeValue = this.truncateString(text);
+    const {
+      inputProps: { onChangeText },
+      codeLength,
+      onFulfill,
+    } = this.props;
 
     this.setState(
       {
-        codeSymbols: newCodeArr.map((e, ind) => {
-          if (ind >= index) {
-            return '';
-          }
-
-          return e;
-        }),
-        currentIndex: index,
+        codeValue,
       },
       () => {
-        if (this.detectFirstFocus) {
-          this.onChangeCb();
-        } else {
-          this.detectFirstFocus = true;
+        if (this.getCodeLength() === codeLength) {
+          this.blurInput();
+
+          onFulfill(codeValue);
         }
       },
     );
-  };
 
-  getClassStyle(variant: VariantNames, active: boolean) {
-    const {
-      activeColor,
-      cellBorderWidth,
-      inactiveColor,
-      inputPosition,
-      space,
-    } = this.props;
-
-    return getClassStyle(variant, active, {
-      activeColor,
-      cellBorderWidth,
-      inactiveColor,
-      inputSpaceStyle: getInputSpaceStyle(space, inputPosition),
-    });
-  }
-
-  onKeyPress = (e: KeyPressEvent) => {
-    if (e.nativeEvent.key !== 'Backspace') {
-      return;
+    if (onChangeText) {
+      return onChangeText(text);
     }
-    const { currentIndex } = this.state;
-    const nextIndex = currentIndex > 0 ? currentIndex - 1 : 0;
-
-    this.setFocus(nextIndex);
   };
 
-  isLastIndex(index: number): boolean {
-    return index === this.props.codeLength - 1;
-  }
-
-  normalizeNewCode(array: Array<string>): Array<string> {
+  getCodeSymbols(): Array<string> {
     const { codeLength } = this.props;
+    const { codeValue } = this.state;
 
-    const clearArray = array.filter(Boolean);
+    return codeValue
+      .split('')
+      .concat(new Array(codeLength).fill(''))
+      .slice(0, codeLength);
+  }
 
-    // Slice code when user paste long text
-    return new Array(codeLength).fill('').map((e, i) => {
-      if (clearArray[i]) {
-        return clearArray[i];
+  blurInput() {
+    const { current } = this.input;
+
+    if (current) {
+      current.blur();
+    }
+  }
+
+  focusInput() {
+    const { current } = this.input;
+
+    if (current) {
+      current.focus();
+    }
+  }
+
+  getCurrentIndex() {
+    return this.state.codeValue.length;
+  }
+
+  getCodeLength() {
+    return this.truncateString(this.state.codeValue).length;
+  }
+
+  truncateString(str: string): string {
+    return str.substr(0, this.props.codeLength);
+  }
+
+  findIndex(locationX: number, locationY: number): number {
+    // $FlowFixMe
+    for (const [index, { x, y, xEnd, yEnd }] of Object.entries(
+      this.cellsLayouts,
+    )) {
+      if (
+        x < locationX &&
+        locationX < xEnd &&
+        (y < locationY && locationY < yEnd)
+      ) {
+        return parseInt(index, 10);
       }
+    }
 
-      return e;
-    });
+    return -1;
   }
 
-  getCurrentIndex(symbols: Array<string>): number {
-    // Try holes in the array [1,2,3,'']
-    const index = symbols.findIndex(symbol => !symbol);
+  handlerOnPress = ({ nativeEvent: { locationX, locationY } }: PressEvent) => {
+    const index = this.findIndex(locationX, locationY);
 
-    if (index === -1) {
-      return this.props.codeLength - 1;
-    }
-
-    return index - 1;
-  }
-
-  handlerOnChangeText = (text: string, index: number) => {
-    // Fix for react-native-web
-    // Skip onChange when text deleted, onKeyPress must handled the behavior
-    if (!text) {
-      return;
-    }
-
-    const { codeSymbols } = this.state;
-
-    if (!this.props.canPasteCode) {
-      text = text[0];
-    }
-
-    const newCodeSymbols = this.normalizeNewCode([
-      ...codeSymbols,
-      ...text.split(''),
-    ]);
-    const currentIndex = this.getCurrentIndex(newCodeSymbols);
-
-    this.setState({
-      codeSymbols: newCodeSymbols,
-      currentIndex: currentIndex + 1,
-    });
-
-    if (this.isLastIndex(currentIndex)) {
-      const { onFulfill } = this.props;
-      const code = newCodeSymbols.join('');
-
-      this.blur(index);
-
-      onFulfill(code);
-    } else {
-      // Skip processing onFocus that changes state
-      this.ignoreOnFocusHandler = true;
-
-      this.setFocus(currentIndex + 1);
+    if (index !== -1) {
+      this.handlerOnTextChange(this.state.codeValue.slice(0, index));
     }
   };
 
-  codeInputRefs: Array<{ blur: () => void, focus: () => void }> = [];
-
-  setFocus(index: number) {
-    this.codeInputRefs[index].focus();
-    this.ignoreOnFocusHandler = false;
-  }
-
-  blur(index: number) {
-    this.codeInputRefs[index].blur();
-  }
-
-  setInputRef = (ref: any, idx: number) => {
-    this.codeInputRefs[idx] = ref;
-  };
-
-  getValue(value: string): string {
-    const { maskSymbol } = this.props;
-
-    return value ? maskSymbol || value.toString() : '';
-  }
-
-  renderInput(value: string, index: number) {
-    const {
-      inputStyle,
-      autoFocus,
-      variant,
-      activeColor,
-      inputProps,
-      keyboardType,
-    } = this.props;
-    const { currentIndex } = this.state;
-
-    const customInputProps = inputProps ? inputProps(index) : null;
-
-    if (process.env.NODE_ENV !== 'production') {
-      validateInputProps(customInputProps);
-    }
-
-    const finalValue = this.getValue(value);
+  renderInput() {
+    const { inputProps, keyboardType } = this.props;
 
     return (
       <TextInput
-        key={index}
-        id={index}
-        forwardRef={this.setInputRef}
-        underlineColorAndroid="transparent"
+        ref={this.input}
         keyboardType={keyboardType}
-        returnKeyType="done"
-        selectionColor={activeColor}
-        autoFocus={autoFocus && index === 0}
-        value={finalValue}
-        {...customInputProps}
-        style={[
-          styles.codeInput,
-          this.styles.input,
-          this.getClassStyle(variant, currentIndex === index),
-          customInputProps && customInputProps.style,
-          typeof inputStyle === 'function'
-            ? inputStyle(index, currentIndex === index, Boolean(value))
-            : null,
-        ]}
-        maxLength={this.calculateMaxLength(finalValue)}
-        onChangeText={this.handlerOnChangeText}
-        onFocus={this.handlerOnFocus}
-        onKeyPress={this.onKeyPress}
-      />
+        {...inputProps}
+        onPress={this.handlerOnPress}
+        style={concatStyles(styles.maskInput, inputProps.style)}
+        onChangeText={this.handlerOnTextChange}
+      >
+        {this.state.codeValue}
+      </TextInput>
     );
   }
 
-  calculateMaxLength(value: string): number {
-    if (this.props.canPasteCode) {
-      return this.props.codeLength;
-    }
-
-    // Fix for emoji '👲'.length === 2
-    return value ? value.length : 1;
-  }
-
   render() {
-    const { inputPosition, containerProps } = this.props;
-    const { codeSymbols } = this.state;
+    const { containerProps } = this.props;
 
     return (
-      <View
-        {...containerProps}
-        style={[
-          styles.container,
-          getContainerStyle(inputPosition),
-          this.styles.container,
-          containerProps.style,
-        ]}
-      >
-        {codeSymbols.map((value, id) => this.renderInput(value, id))}
+      <View {...containerProps} style={getContainerStyle(this.props)}>
+        {this.renderCodeCells()}
+        {this.renderInput()}
       </View>
     );
   }
