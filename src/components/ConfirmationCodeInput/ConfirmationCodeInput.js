@@ -1,338 +1,284 @@
 // @flow
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { View, TextInput as TextInputNative, StyleSheet } from 'react-native';
+import { View, TextInput as TextInputNative } from 'react-native';
 
-import TextInput from '../TextInput';
-import { getClassStyle, getInputSpaceStyle } from '../../utils';
-import { getContainerStyle, styles } from './styles';
-import { validateCompareCode, validateInputProps } from './validation';
+import createRef from '../../createRef';
+import { concatStyles } from '../../styles';
 
-import type { Props, State, KeyPressEvent } from './types';
-import type { VariantNames } from '../../types';
+import Cursor from '../Cursor';
+import TextCustom from '../TextCustom';
+import TextInputCustom from '../TextInputCustom';
 
-const getDefaultCodeSymbols: number => Array<string> = codeLength =>
-  new Array(codeLength).fill('');
+import { getCellStyle, getContainerStyle, styles } from './styles';
+import { validateCompareCode } from './validation';
 
-export default class ConfirmationCodeInput extends PureComponent<Props, State> {
-  static propTypes = {
-    activeColor: PropTypes.string,
-    autoFocus: PropTypes.bool,
-    cellBorderWidth: PropTypes.number,
-    codeLength: PropTypes.number,
-    containerProps: PropTypes.object,
-    defaultCode: validateCompareCode,
-    inputProps: PropTypes.func,
-    inputStyle: PropTypes.func,
-    inactiveColor: PropTypes.string,
-    inputPosition: PropTypes.oneOf(['center', 'left', 'right', 'full-width']),
-    onChangeCode: PropTypes.func,
-    onFulfill: PropTypes.func.isRequired,
-    size: PropTypes.number,
-    space: PropTypes.number,
-    variant: PropTypes.oneOf([
-      'border-box',
-      'border-circle',
-      'border-b',
-      'border-b-t',
-      'border-l-r',
-      'clear',
-    ]),
-    keyboardType: TextInputNative.propTypes.keyboardType,
-    maskSymbol: PropTypes.string,
-  };
+import type { Props, State } from './types';
+import type {
+  LayoutEvent,
+  PressEvent,
+} from 'react-native/Libraries/Types/CoreEventTypes';
 
+class ConfirmationCodeInput extends PureComponent<Props, State> {
   static defaultProps = {
+    cellProps: null,
     activeColor: '#fff',
     autoFocus: false,
     cellBorderWidth: 1,
     codeLength: 5,
     containerProps: {},
     defaultCode: null,
-    inputProps: null,
-    inputStyle: null,
+    inputProps: {},
     inactiveColor: '#ffffff40',
     inputPosition: 'center',
-    onChangeCode: null,
     size: 40,
     space: 8,
     variant: 'border-box',
-    keyboardType: 'default',
-    maskSymbol: null,
-    canPasteCode: false,
+    keyboardType: 'number-pad',
+    maskSymbol: '',
   };
 
-  styles: Object;
+  input = createRef();
 
-  ignoreOnFocusHandler: boolean = false;
-
-  constructor(...args: any) {
-    super(...args);
-
-    const { defaultCode, codeLength, size } = this.props;
-
-    this.state = {
-      codeSymbols:
-        typeof defaultCode === 'string'
-          ? defaultCode.split('')
-          : getDefaultCodeSymbols(codeLength),
-      currentIndex: 0,
-    };
-
-    this.styles = StyleSheet.create({
-      input: {
-        width: size,
-        height: size,
-      },
-      container: { height: size },
-    });
-  }
-
-  onChangeCb = () => {
-    const { onChangeCode } = this.props;
-
-    if (onChangeCode) {
-      onChangeCode(this.state.codeSymbols.join(''));
-    }
+  state = {
+    isFocused: false,
+    codeValue: this.props.defaultCode
+      ? this.truncateString(this.props.defaultCode)
+      : '',
   };
+
+  cellsLayouts: {
+    [key: string]: {|
+      x: number,
+      y: number,
+      xEnd: number,
+      yEnd: number,
+    |},
+  } = {};
 
   clear() {
-    this.setState(
-      {
-        currentIndex: 0,
-        codeSymbols: getDefaultCodeSymbols(this.props.codeLength),
-      },
-      () => {
-        this.setFocus(0);
-      },
-    );
+    this.handlerOnTextChange('');
   }
 
-  detectFirstFocus: boolean = false;
+  handlerOnLayoutCell = (index: number, event: LayoutEvent) => {
+    const { width, x, y, height } = event.nativeEvent.layout;
 
-  handlerOnFocus = (index: number) => {
-    if (this.ignoreOnFocusHandler) {
-      return;
-    }
-
-    const newCodeArr = [...this.state.codeSymbols];
-    const currentEmptyIndex = newCodeArr.findIndex(c => !c);
-
-    if (currentEmptyIndex !== -1 && currentEmptyIndex < index) {
-      return this.setFocus(currentEmptyIndex);
-    }
-
-    this.setState(
-      {
-        codeSymbols: newCodeArr.map((e, ind) => {
-          if (ind >= index) {
-            return '';
-          }
-
-          return e;
-        }),
-        currentIndex: index,
-      },
-      () => {
-        if (this.detectFirstFocus) {
-          this.onChangeCb();
-        } else {
-          this.detectFirstFocus = true;
-        }
-      },
-    );
+    this.cellsLayouts[`${index}`] = { x, xEnd: x + width, y, yEnd: y + height };
   };
 
-  getClassStyle(variant: VariantNames, active: boolean) {
-    const {
-      activeColor,
-      cellBorderWidth,
-      inactiveColor,
-      inputPosition,
-      space,
-    } = this.props;
+  renderCode = (codeSymbol: string, index: number) => {
+    const { cellProps, maskSymbol } = this.props;
+    const isActive = this.getCurrentIndex() === index;
 
-    return getClassStyle(variant, active, {
-      activeColor,
-      cellBorderWidth,
-      inactiveColor,
-      inputSpaceStyle: getInputSpaceStyle(space, inputPosition),
-    });
-  }
+    let customProps = null;
 
-  onKeyPress = (e: KeyPressEvent) => {
-    if (e.nativeEvent.key !== 'Backspace') {
-      return;
-    }
-    const { currentIndex } = this.state;
-    const nextIndex = currentIndex > 0 ? currentIndex - 1 : 0;
-
-    this.setFocus(nextIndex);
-  };
-
-  isLastIndex(index: number): boolean {
-    return index === this.props.codeLength - 1;
-  }
-
-  normalizeNewCode(array: Array<string>): Array<string> {
-    const { codeLength } = this.props;
-
-    const clearArray = array.filter(Boolean);
-
-    // Slice code when user paste long text
-    return new Array(codeLength).fill('').map((e, i) => {
-      if (clearArray[i]) {
-        return clearArray[i];
-      }
-
-      return e;
-    });
-  }
-
-  getCurrentIndex(symbols: Array<string>): number {
-    // Try holes in the array [1,2,3,'']
-    const index = symbols.findIndex(symbol => !symbol);
-
-    if (index === -1) {
-      return this.props.codeLength - 1;
+    if (cellProps) {
+      customProps =
+        typeof cellProps === 'function'
+          ? cellProps({
+              index,
+              isFocused: isActive,
+              hasValue: Boolean(codeSymbol),
+            })
+          : cellProps;
     }
 
-    return index - 1;
-  }
-
-  handlerOnChangeText = (text: string, index: number) => {
-    // Fix for react-native-web
-    // Skip onChange when text deleted, onKeyPress must handled the behavior
-    if (!text) {
-      return;
-    }
-
-    const { codeSymbols } = this.state;
-
-    if (!this.props.canPasteCode) {
-      text = text[0];
-    }
-
-    const newCodeSymbols = this.normalizeNewCode([
-      ...codeSymbols,
-      ...text.split(''),
-    ]);
-    const currentIndex = this.getCurrentIndex(newCodeSymbols);
-
-    this.setState({
-      codeSymbols: newCodeSymbols,
-      currentIndex: currentIndex + 1,
-    });
-
-    if (this.isLastIndex(currentIndex)) {
-      const { onFulfill } = this.props;
-      const code = newCodeSymbols.join('');
-
-      this.blur(index);
-
-      onFulfill(code);
-    } else {
-      // Skip processing onFocus that changes state
-      this.ignoreOnFocusHandler = true;
-
-      this.setFocus(currentIndex + 1);
-    }
-  };
-
-  codeInputRefs: Array<{ blur: () => void, focus: () => void }> = [];
-
-  setFocus(index: number) {
-    this.codeInputRefs[index].focus();
-    this.ignoreOnFocusHandler = false;
-  }
-
-  blur(index: number) {
-    this.codeInputRefs[index].blur();
-  }
-
-  setInputRef = (ref: any, idx: number) => {
-    this.codeInputRefs[idx] = ref;
-  };
-
-  getValue(value: string): string {
-    const { maskSymbol } = this.props;
-
-    return value ? maskSymbol || value.toString() : '';
-  }
-
-  renderInput(value: string, index: number) {
-    const {
-      inputStyle,
-      autoFocus,
-      variant,
-      activeColor,
-      inputProps,
-      keyboardType,
-    } = this.props;
-    const { currentIndex } = this.state;
-
-    const customInputProps = inputProps ? inputProps(index) : null;
-
-    if (process.env.NODE_ENV !== 'production') {
-      validateInputProps(customInputProps);
-    }
-
-    const finalValue = this.getValue(value);
+    const customStyle = customProps && customProps.style;
 
     return (
-      <TextInput
+      // $FlowFixMe - Strange bag with `onLayout` property
+      <TextCustom
+        {...customProps}
         key={index}
-        id={index}
-        forwardRef={this.setInputRef}
-        underlineColorAndroid="transparent"
-        keyboardType={keyboardType}
-        returnKeyType="done"
-        selectionColor={activeColor}
-        autoFocus={autoFocus && index === 0}
-        value={finalValue}
-        {...customInputProps}
-        style={[
-          styles.codeInput,
-          this.styles.input,
-          this.getClassStyle(variant, currentIndex === index),
-          customInputProps && customInputProps.style,
-          typeof inputStyle === 'function'
-            ? inputStyle(index, currentIndex === index, Boolean(value))
-            : null,
-        ]}
-        maxLength={this.calculateMaxLength(finalValue)}
-        onChangeText={this.handlerOnChangeText}
-        onFocus={this.handlerOnFocus}
-        onKeyPress={this.onKeyPress}
-      />
+        index={index}
+        onLayout={this.handlerOnLayoutCell}
+        style={concatStyles(
+          getCellStyle(this.props, { isActive, customStyle }),
+          customStyle,
+        )}
+      >
+        {isActive
+          ? this.renderCursor()
+          : (codeSymbol && maskSymbol) || codeSymbol}
+      </TextCustom>
     );
-  }
+  };
 
-  calculateMaxLength(value: string): number {
-    if (this.props.canPasteCode) {
-      return this.props.codeLength;
+  renderCursor() {
+    if (this.state.isFocused) {
+      return <Cursor />;
     }
 
-    // Fix for emoji '👲'.length === 2
-    return value ? value.length : 1;
+    return null;
+  }
+
+  renderCodeCells() {
+    // $FlowFixMe
+    return this.getCodeSymbols().map(this.renderCode);
+  }
+
+  inheritTextInputMethod(methodName: string, handler: Function) {
+    return (e: mixed) => {
+      handler(e);
+
+      const { inputProps } = this.props;
+
+      if (inputProps && inputProps[methodName]) {
+        inputProps[methodName](e);
+      }
+    };
+  }
+
+  handlerOnTextChange = this.inheritTextInputMethod(
+    'onTextChange',
+    (text: string) => {
+      const codeValue = this.truncateString(text);
+      const { codeLength, onFulfill } = this.props;
+
+      this.setState(
+        {
+          codeValue,
+        },
+        () => {
+          if (this.getCodeLength() === codeLength) {
+            this.blur();
+
+            onFulfill(codeValue);
+          }
+        },
+      );
+    },
+  );
+
+  getCodeSymbols(): Array<string> {
+    const { codeLength } = this.props;
+    const { codeValue } = this.state;
+
+    return codeValue
+      .split('')
+      .concat(new Array(codeLength).fill(''))
+      .slice(0, codeLength);
+  }
+
+  blur() {
+    const { current } = this.input;
+
+    if (current) {
+      current.blur();
+    }
+  }
+
+  focus() {
+    const { current } = this.input;
+
+    if (current) {
+      current.focus();
+    }
+  }
+
+  getCurrentIndex() {
+    return this.state.codeValue.length;
+  }
+
+  getCodeLength() {
+    return this.truncateString(this.state.codeValue).length;
+  }
+
+  truncateString(str: string): string {
+    return str.substr(0, this.props.codeLength);
+  }
+
+  findIndex(locationX: number, locationY: number): number {
+    // $FlowFixMe
+    for (const [index, { x, y, xEnd, yEnd }] of Object.entries(
+      this.cellsLayouts,
+    )) {
+      if (
+        x < locationX &&
+        locationX < xEnd &&
+        (y < locationY && locationY < yEnd)
+      ) {
+        return parseInt(index, 10);
+      }
+    }
+
+    return -1;
+  }
+
+  handlerOnPress = ({ nativeEvent: { locationX, locationY } }: PressEvent) => {
+    const index = this.findIndex(locationX, locationY);
+
+    if (index !== -1) {
+      this.handlerOnTextChange(this.state.codeValue.slice(0, index));
+    }
+  };
+
+  handlerOnFocus = this.inheritTextInputMethod('onFocus', () =>
+    this.setState({ isFocused: true }),
+  );
+
+  handlerOnBlur = this.inheritTextInputMethod('onBlur', () =>
+    this.setState({ isFocused: false }),
+  );
+
+  renderInput() {
+    const { inputProps, keyboardType, codeLength } = this.props;
+
+    return (
+      <TextInputCustom
+        ref={this.input}
+        keyboardType={keyboardType}
+        maxLength={codeLength}
+        {...inputProps}
+        onBlur={this.handlerOnBlur}
+        onFocus={this.handlerOnFocus}
+        onPress={this.handlerOnPress}
+        style={concatStyles(styles.maskInput, inputProps.style)}
+        onChangeText={this.handlerOnTextChange}
+      >
+        {this.state.codeValue}
+      </TextInputCustom>
+    );
   }
 
   render() {
-    const { inputPosition, containerProps } = this.props;
-    const { codeSymbols } = this.state;
+    const { containerProps } = this.props;
 
     return (
-      <View
-        {...containerProps}
-        style={[
-          styles.container,
-          getContainerStyle(inputPosition),
-          this.styles.container,
-          containerProps.style,
-        ]}
-      >
-        {codeSymbols.map((value, id) => this.renderInput(value, id))}
+      <View {...containerProps} style={getContainerStyle(this.props)}>
+        {this.renderCodeCells()}
+        {this.renderInput()}
       </View>
     );
   }
 }
+
+if (process.env.NODE_ENV !== 'production') {
+  const PropTypes = require('prop-types');
+
+  ConfirmationCodeInput.propTypes = {
+    onFulfill: PropTypes.func.isRequired,
+
+    activeColor: PropTypes.string,
+    autoFocus: PropTypes.bool,
+    cellBorderWidth: PropTypes.number,
+    codeLength: PropTypes.number,
+    containerProps: PropTypes.object,
+    defaultCode: validateCompareCode,
+    cellProps: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    inputProps: PropTypes.object,
+    inactiveColor: PropTypes.string,
+    inputPosition: PropTypes.oneOf(['center', 'left', 'right', 'full-width']),
+    size: PropTypes.number,
+    space: PropTypes.number,
+    variant: PropTypes.oneOf([
+      'border-box',
+      'border-circle',
+      'border-b',
+      'clear',
+    ]),
+    keyboardType: TextInputNative.propTypes.keyboardType,
+    maskSymbol: PropTypes.string,
+  };
+}
+
+export default ConfirmationCodeInput;
