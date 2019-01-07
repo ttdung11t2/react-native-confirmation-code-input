@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.0
+
+- Fix IOS borderBottom style [#28](https://github.com/retyui/react-native-confirmation-code-field/pull/28/files) 
+
 ## 3.0.0
 
 - Remove base implementation based on `One code cell` === `One TextInput`
