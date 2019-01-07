@@ -1,11 +1,11 @@
 // @flow
 import type { LayoutEvent } from 'react-native/Libraries/Types/CoreEventTypes';
 import React, { Component, type ElementConfig } from 'react';
-import { Text } from 'react-native';
+import { TextInput } from 'react-native';
 
 import { omit } from '../omit';
 
-type TextProps = ElementConfig<typeof Text>;
+type TextProps = ElementConfig<typeof TextInput>;
 type TextPropsWithoutOnLayout = $Diff<TextProps, { onLayout: any }>;
 
 type Props = $ReadOnly<{|
@@ -14,7 +14,7 @@ type Props = $ReadOnly<{|
   index: number,
 |}>;
 
-class TextCustom extends Component<Props> {
+class Cell extends Component<Props> {
   handlerOnLayout = (event: LayoutEvent) => {
     const { onLayout, index } = this.props;
 
@@ -25,7 +25,7 @@ class TextCustom extends Component<Props> {
 
   render() {
     return (
-      <Text
+      <TextInput
         onLayout={this.handlerOnLayout}
         {...omit(['onLayout', 'index'], this.props)}
       />
@@ -36,10 +36,10 @@ class TextCustom extends Component<Props> {
 if (process.env.NODE_ENV !== 'production') {
   const PropTypes = require('prop-types');
 
-  TextCustom.propTypes = {
-    ...Text.propTypes,
+  Cell.propTypes = {
+    ...TextInput.propTypes,
     index: PropTypes.number.isRequired,
   };
 }
 
-export default TextCustom;
+export default Cell;
