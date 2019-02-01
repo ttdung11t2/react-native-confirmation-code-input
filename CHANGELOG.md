@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.2.0
+
+- Fix Flow.js error for support `react-native@0.58` [#33](https://github.com/retyui/react-native-confirmation-code-field/pull/33)
+
 ## 3.1.3
 
 - Fix `autoFucus` prop [#32](https://github.com/retyui/react-native-confirmation-code-field/pull/32)
