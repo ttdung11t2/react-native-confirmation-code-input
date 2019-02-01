@@ -87,8 +87,8 @@ class ConfirmationCodeInput extends PureComponent<Props, State> {
       // $FlowFixMe - Strange bag with `onLayout` property
       <Cell
         key={index}
-        editable={false}
         {...customProps}
+        editable={false}
         index={index}
         onLayout={this.handlerOnLayoutCell}
         style={concatStyles(
@@ -221,14 +221,15 @@ class ConfirmationCodeInput extends PureComponent<Props, State> {
   );
 
   renderInput() {
-    const { inputProps, keyboardType, codeLength } = this.props;
+    const { autoFocus, inputProps, keyboardType, codeLength } = this.props;
 
     return (
       <TextInputCustom
         ref={this.input}
-        keyboardType={keyboardType}
         maxLength={codeLength}
         {...inputProps}
+        autoFocus={autoFocus}
+        keyboardType={keyboardType}
         onBlur={this.handlerOnBlur}
         onFocus={this.handlerOnFocus}
         onPress={this.handlerOnPress}
