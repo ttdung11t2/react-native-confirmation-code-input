@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.2.1
+
+- Fix issue about `testID` [#38](https://github.com/retyui/react-native-confirmation-code-field/issues/38)
+
 ## 3.2.0
 
 - Fix Flow.js error for support `react-native@0.58` [#33](https://github.com/retyui/react-native-confirmation-code-field/pull/33)
