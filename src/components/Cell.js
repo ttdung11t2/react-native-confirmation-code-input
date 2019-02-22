@@ -24,6 +24,7 @@ class Cell extends Component<Props> {
   };
 
   render() {
+    // TODO: replace to Text component (via: https://github.com/facebook/react-native/issues/23537)
     return (
       <TextInput
         onLayout={this.handlerOnLayout}
