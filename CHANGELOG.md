@@ -2,6 +2,13 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.2.2
+
+- Update typings [#43 index.d.ts](https://github.com/retyui/react-native-confirmation-code-field/pull/43/files#diff-b52768974e6bc0faccb7d4b75b162c99)
+- Add example how work with `paste()` and `clean()` to README.md [#43 README.md](https://github.com/retyui/react-native-confirmation-code-field/pull/43/files#diff-04c6e90faac2675aa89e2176d2eec7d8)
+- Recreate example for RN@0.59
+- Update `devDependencies`
+
 ## 3.2.1
 
 - Fix issue about `testID` [#38](https://github.com/retyui/react-native-confirmation-code-field/issues/38)
