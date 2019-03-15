@@ -1,6 +1,6 @@
 {
   "name": "react-native-confirmation-code-field",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "main": "src/components/ConfirmationCodeInput/index.js",
   "scripts": {
     "test": "jest",
