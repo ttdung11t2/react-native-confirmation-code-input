@@ -25,6 +25,7 @@ export type Props = $ReadOnly<{|
   autoFocus: boolean,
   codeLength: number,
   defaultCode: ?string,
+  normalizeCode: string => string,
 
   activeColor: string,
   cellBorderWidth: number,

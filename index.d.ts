@@ -25,6 +25,7 @@ declare module 'react-native-confirmation-code-field' {
 
     codeLength?: number;
     defaultCode?: string;
+    normalizeCode?: (code: string) => string;
 
     activeColor?: string;
     cellBorderWidth?: number;

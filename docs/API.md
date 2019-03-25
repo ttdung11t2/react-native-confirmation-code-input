@@ -39,6 +39,11 @@
 
 Callback function called when fulfilling code.
 
+
+### `normalizeCode: (code: string) => void`
+
+This function will called before setState will apply a new code. It useful when you need check pasted user text.
+
 **Required**
 
 ### `autoFocus?: boolean`

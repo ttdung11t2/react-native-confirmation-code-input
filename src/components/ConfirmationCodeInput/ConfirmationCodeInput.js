@@ -18,6 +18,7 @@ import type {
 
 class ConfirmationCodeInput extends PureComponent<Props, State> {
   static defaultProps = {
+    normalizeCode: (code: string): string => code,
     cellProps: null,
     activeColor: '#fff',
     autoFocus: false,
@@ -183,7 +184,9 @@ class ConfirmationCodeInput extends PureComponent<Props, State> {
   }
 
   truncateString(str: string): string {
-    return str.substr(0, this.props.codeLength);
+    const { codeLength, normalizeCode } = this.props;
+
+    return normalizeCode(str.substr(0, codeLength));
   }
 
   findIndex(locationX: number, locationY: number): number {
@@ -264,6 +267,7 @@ if (process.env.NODE_ENV !== 'production') {
   ConfirmationCodeInput.propTypes = {
     onFulfill: PropTypes.func.isRequired,
 
+    normalizeCode: PropTypes.func,
     activeColor: PropTypes.string,
     autoFocus: PropTypes.bool,
     cellBorderWidth: PropTypes.number,
