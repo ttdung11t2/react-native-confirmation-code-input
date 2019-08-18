@@ -71,6 +71,7 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   _setFocus(index) {
+    this.props.onCodeChange(new Array(this.props.codeLength).fill('').join(''))
     this.codeInputRefs[index].focus();
   }
   
