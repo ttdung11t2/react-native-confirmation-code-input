@@ -22,6 +22,7 @@ export default class ConfirmationCodeInput extends Component {
     codeInputStyle: TextInput.propTypes.style,
     containerStyle: viewPropTypes.style,
     onFulfill: PropTypes.func,
+    onCodeChange: PropTypes.func
   };
   
   static defaultProps = {
@@ -35,7 +36,8 @@ export default class ConfirmationCodeInput extends Component {
     inactiveColor: 'rgba(255, 255, 255, 0.2)',
     space: 8,
     compareWithCode: '',
-    ignoreCase: false
+    ignoreCase: false,
+    onCodeChange: (code) => null
   };
   
   constructor(props) {
@@ -69,6 +71,7 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   _setFocus(index) {
+    this.props.onCodeChange(new Array(this.props.codeLength).fill('').join(''))
     this.codeInputRefs[index].focus();
   }
   
@@ -196,13 +199,20 @@ export default class ConfirmationCodeInput extends Component {
   _onKeyPress(e) {
     if (e.nativeEvent.key === 'Backspace') {
       const { currentIndex } = this.state;
+      let newCodeArr = _.clone(this.state.codeArr);
       const nextIndex = currentIndex > 0 ? currentIndex - 1 : 0;
+      for (const i in newCodeArr) {
+        if (i >= nextIndex) {
+          newCodeArr[i] = '';
+        }
+      }
+      this.props.onCodeChange(newCodeArr.join(''))
       this._setFocus(nextIndex);
     }
   }
   
   _onInputCode(character, index) {
-    const { codeLength, onFulfill, compareWithCode, ignoreCase } = this.props;
+    const { codeLength, onFulfill, compareWithCode, ignoreCase, onCodeChange } = this.props;
     let newCodeArr = _.clone(this.state.codeArr);
     newCodeArr[index] = character;
     
@@ -226,7 +236,7 @@ export default class ConfirmationCodeInput extends Component {
         codeArr: newCodeArr,
         currentIndex: prevState.currentIndex + 1
       };
-    });
+    }, () => { onCodeChange(newCodeArr.join('')) });
   }
   
   render() {
