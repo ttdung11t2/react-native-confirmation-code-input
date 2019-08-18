@@ -21,7 +21,7 @@ A react-native confirmation code input for both IOS and Android
 ## Installation
 
 ```sh
-npm install react-native-confirmation-code-input --save
+npm install git+https://github.com/PujanShah22/react-native-confirmation-code-input.git
 ```
 
 ## Usage
@@ -43,6 +43,7 @@ render() {
       size={30}
       inputPosition='left'
       onFulfill={(code) => this._onFulfill(code)}
+      onCodeChange={(code) => { this.state.code = code }}
     />
     
     <CodeInput
@@ -58,6 +59,7 @@ render() {
       onFulfill={(isValid) => this._onFinishCheckingCode1(isValid)}
       containerStyle={{ marginTop: 30 }}
       codeInputStyle={{ borderWidth: 1.5 }}
+      onCodeChange={(code) => { this.state.code = code }}
     />
     
     <CodeInput
@@ -69,6 +71,7 @@ render() {
       autoFocus={false}
       codeInputStyle={{ fontWeight: '800' }}
       onFulfill={(isValid, code) => this._onFinishCheckingCode2(isValid, code)}
+      onCodeChange={(code) => { this.state.code = code }}
     />
   )
 }
@@ -104,14 +107,7 @@ this.refs.refName.clear();
     ref="refName"
 />
 ```
-## Example
-See [EXAMPLE](example)
-```sh
-git clone https://github.com/ttdung11t2/react-native-confirmation-code-input.git
-cd react-native-confirmation-code-input/example
-npm install
-react-native run-ios / react-native run-android
-```
+
 ## License
 
 react-native-confirmation-code-input is released under the MIT license. See [LICENSE](LICENSE) for details.  
