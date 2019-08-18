@@ -96,6 +96,7 @@ Prop       | Type    | Default    | Description
 `codeInputStyle`    | style object   |        | custom style for code input
 `containerStyle`    | style object   |        | custom style for code input container
 `onFulfill`         | function |              | callback function called when fulfilling code. If `compareWithCode` is null -> return `(code)` in callback, else return `(isValid, code)`. **Required**
+`onCodeChange`      | function |              | callback function called when updating code.
 
 ## functions
 clear input:
