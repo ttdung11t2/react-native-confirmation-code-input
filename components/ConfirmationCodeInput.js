@@ -22,6 +22,7 @@ export default class ConfirmationCodeInput extends Component {
     codeInputStyle: TextInput.propTypes.style,
     containerStyle: viewPropTypes.style,
     onFulfill: PropTypes.func,
+    onChangeText: PropTypes.func,
   };
   
   static defaultProps = {
@@ -87,7 +88,8 @@ export default class ConfirmationCodeInput extends Component {
         newCodeArr[i] = '';
       }
     }
-    
+
+    this.props.onChangeText(newCodeArr)
     this.setState({
       codeArr: newCodeArr,
       currentIndex: index
@@ -202,7 +204,7 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   _onInputCode(character, index) {
-    const { codeLength, onFulfill, compareWithCode, ignoreCase } = this.props;
+    const { codeLength, onFulfill, compareWithCode, ignoreCase, onChangeText } = this.props;
     let newCodeArr = _.clone(this.state.codeArr);
     newCodeArr[index] = character;
     
@@ -220,7 +222,8 @@ export default class ConfirmationCodeInput extends Component {
     } else {
       this._setFocus(this.state.currentIndex + 1);
     }
-    
+
+    onChangeText(newCodeArr)
     this.setState(prevState => {
       return {
         codeArr: newCodeArr,
