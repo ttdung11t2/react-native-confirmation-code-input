@@ -16,12 +16,15 @@ export default class ConfirmationCodeInput extends Component {
     className: PropTypes.string,
     cellBorderWidth: PropTypes.number,
     activeColor: PropTypes.string,
+    errorColor: PropTypes.string,
+    fillColor: PropTypes.string,
     inactiveColor: PropTypes.string,
     ignoreCase: PropTypes.bool,
     autoFocus: PropTypes.bool,
     codeInputStyle: TextInput.propTypes.style,
     containerStyle: viewPropTypes.style,
     onFulfill: PropTypes.func,
+    error: PropTypes.bool,
   };
   
   static defaultProps = {
@@ -33,17 +36,21 @@ export default class ConfirmationCodeInput extends Component {
     cellBorderWidth: 1,
     activeColor: 'rgba(255, 255, 255, 1)',
     inactiveColor: 'rgba(255, 255, 255, 0.2)',
+    fillColor: 'rgba(255, 255, 255, 0.2)',
+    errorColor: 'rgba(255,0,0,0.8)',
     space: 8,
     compareWithCode: '',
-    ignoreCase: false
+    ignoreCase: false,
+    error: false,
   };
   
   constructor(props) {
     super(props);
     
+    const { codeLength } = props;
     this.state = {
-      codeArr: new Array(this.props.codeLength).fill(''),
-      currentIndex: 0
+      codeArr: new Array(codeLength).fill(''),
+      currentIndex: 0,
     };
     
     this.codeInputRefs = [];
@@ -61,9 +68,10 @@ export default class ConfirmationCodeInput extends Component {
   }
   
   clear() {
+    const { codeLength } = this.props;
     this.setState({
-      codeArr: new Array(this.props.codeLength).fill(''),
-      currentIndex: 0
+      codeArr: new Array(codeLength).fill(''),
+      currentIndex: 0,
     });
     this._setFocus(0);
   }
@@ -149,9 +157,9 @@ export default class ConfirmationCodeInput extends Component {
         };
     }
   }
-  
-  _getClassStyle(className, active) {
-    const { cellBorderWidth, activeColor, inactiveColor, space } = this.props;
+
+  _getClassStyle(className, active, error, fill) {
+    const { cellBorderWidth, activeColor, inactiveColor, space, errorColor, fillColor } = this.props;
     let classStyle = {
       ...this._getInputSpaceStyle(space),
       color: activeColor
@@ -163,30 +171,30 @@ export default class ConfirmationCodeInput extends Component {
       case 'border-box':
         return _.merge(classStyle, {
           borderWidth: cellBorderWidth,
-          borderColor: (active ? activeColor : inactiveColor)
+          borderColor: (active ? activeColor : error ? errorColor : fill ? fillColor : inactiveColor)
         });
       case 'border-circle':
         return _.merge(classStyle, {
           borderWidth: cellBorderWidth,
           borderRadius: 50,
-          borderColor: (active ? activeColor : inactiveColor)
+          borderColor: (active ? activeColor : error ? errorColor : fill ? fillColor : inactiveColor)
         });
       case 'border-b':
         return _.merge(classStyle, {
           borderBottomWidth: cellBorderWidth,
-          borderColor: (active ? activeColor : inactiveColor),
+          borderColor: (active ? activeColor : error ? errorColor : fill ? fillColor : inactiveColor),
         });
       case 'border-b-t':
         return _.merge(classStyle, {
           borderTopWidth: cellBorderWidth,
           borderBottomWidth: cellBorderWidth,
-          borderColor: (active ? activeColor : inactiveColor)
+          borderColor: (active ? activeColor : error ? errorColor : fill ? fillColor : inactiveColor)
         });
       case 'border-l-r':
         return _.merge(classStyle, {
           borderLeftWidth: cellBorderWidth,
           borderRightWidth: cellBorderWidth,
-          borderColor: (active ? activeColor : inactiveColor)
+          borderColor: (active ? activeColor : error ? errorColor : fill ? fillColor : inactiveColor)
         });
       default:
         return className;
@@ -238,7 +246,10 @@ export default class ConfirmationCodeInput extends Component {
       autoFocus,
       className,
       size,
-      activeColor
+      activeColor,
+      errorColor,
+      error,
+      ...props
     } = this.props;
     
     const initialCodeInputStyle = {
@@ -254,16 +265,16 @@ export default class ConfirmationCodeInput extends Component {
           key={id}
           ref={ref => (this.codeInputRefs[id] = ref)}
           style={[
-            styles.codeInput, 
-            initialCodeInputStyle, 
-            this._getClassStyle(className, this.state.currentIndex == id),
+            styles.codeInput,
+            initialCodeInputStyle,
+            this._getClassStyle(className, this.state.currentIndex == id, error, this.state.codeArr[id]),
             codeInputStyle
           ]}
           underlineColorAndroid="transparent"
           selectionColor={activeColor}
           keyboardType={'name-phone-pad'}
           returnKeyType={'done'}
-          {...this.props}
+          {...props}
           autoFocus={autoFocus && id == 0}
           onFocus={() => this._onFocus(id)}
           value={this.state.codeArr[id] ? this.state.codeArr[id].toString() : ''}
