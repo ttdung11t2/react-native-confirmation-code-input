@@ -22,6 +22,7 @@ export default class ConfirmationCodeInput extends Component {
     codeInputStyle: TextInput.propTypes.style,
     containerStyle: viewPropTypes.style,
     onFulfill: PropTypes.func,
+    rtl: PropTypes.bool,
   };
   
   static defaultProps = {
@@ -36,6 +37,7 @@ export default class ConfirmationCodeInput extends Component {
     space: 8,
     compareWithCode: '',
     ignoreCase: false
+    rtl: false,
   };
   
   constructor(props) {
@@ -239,6 +241,7 @@ export default class ConfirmationCodeInput extends Component {
       className,
       size,
       activeColor
+      rtl,
     } = this.props;
     
     const initialCodeInputStyle = {
@@ -248,7 +251,7 @@ export default class ConfirmationCodeInput extends Component {
     
     let codeInputs = [];
     for (let i = 0; i < codeLength; i++) {
-      const id = i;
+      const id = rtl ? codeLength - i - 1 : i;
       codeInputs.push(
         <TextInput
           key={id}
