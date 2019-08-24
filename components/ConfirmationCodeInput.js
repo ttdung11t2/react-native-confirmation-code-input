@@ -34,7 +34,6 @@ export default class ConfirmationCodeInput extends Component {
     space: 8,
     compareWithCode: '',
     ignoreCase: false,
-    onCodeChange: (code) => null
   };
   
   constructor(props) {
