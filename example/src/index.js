@@ -8,7 +8,6 @@ import {
   Text,
   View,
   ScrollView,
-  TextInput,
   Alert
 } from 'react-native';
 
@@ -103,6 +102,7 @@ class example extends Component {
               size={30}
               inputPosition='left'
               onFulfill={(code) => this._onFulfill(code)}
+              onCodeChange={(code) => { this.state.code = code }}
             />
           </View>
   
@@ -121,9 +121,9 @@ class example extends Component {
               onFulfill={(isValid) => this._onFinishCheckingCode1(isValid)}
               containerStyle={{ marginTop: 30 }}
               codeInputStyle={{ borderWidth: 1.5 }}
+              onCodeChange={(code) => { this.state.code = code }}
             />
           </View>
-  
           <View style={styles.inputWrapper3}>
             <Text style={styles.inputLabel3}>CIRCLE CONFIRMATION CODE</Text>
             <CodeInput
@@ -135,6 +135,7 @@ class example extends Component {
               autoFocus={false}
               codeInputStyle={{ fontWeight: '800' }}
               onFulfill={(isValid, code) => this._onFinishCheckingCode2(isValid, code)}
+              onCodeChange={(code) => { this.state.code = code }}
             />
           </View>
         </ScrollView> 
