@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { View, TextInput, StyleSheet, Dimensions } from "react-native";
+import { View, TextInput, StyleSheet } from "react-native";
 import _ from "lodash";
 
 export default class ConfirmationCodeInput extends Component {
