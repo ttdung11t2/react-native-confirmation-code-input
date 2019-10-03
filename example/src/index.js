@@ -115,7 +115,7 @@ class example extends Component {
               activeColor='rgba(49, 180, 4, 1)'
               inactiveColor='rgba(49, 180, 4, 1.3)'
               autoFocus={false}
-              ignoreCase={true}
+              ignoreCase
               inputPosition='center'
               size={50}
               onFulfill={(isValid) => this._onFinishCheckingCode1(isValid)}
