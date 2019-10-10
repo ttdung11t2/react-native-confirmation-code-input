@@ -268,7 +268,6 @@ export default class ConfirmationCodeInput extends Component {
             codeInputStyle
           ]}
           underlineColorAndroid="transparent"
-          selectionColor={activeColor}
           keyboardType={'name-phone-pad'}
           returnKeyType={'done'}
           {...this.props}
