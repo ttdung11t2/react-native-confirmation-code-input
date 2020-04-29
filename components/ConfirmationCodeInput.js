@@ -44,8 +44,7 @@ export default class ConfirmationCodeInput extends Component {
     
     this.state = {
       codeArr: new Array(this.props.codeLength).fill(''),
-      currentIndex: 0,
-      dirty: false
+      currentIndex: 0
     };
     
     this.codeInputRefs = [];
@@ -65,8 +64,7 @@ export default class ConfirmationCodeInput extends Component {
   clear() {
     this.setState({
       codeArr: new Array(this.props.codeLength).fill(''),
-      currentIndex: 0,
-      dirty: false
+      currentIndex: 0
     });
     this._setFocus(0);
   }
@@ -271,6 +269,7 @@ export default class ConfirmationCodeInput extends Component {
       autoFocus,
       className,
       size,
+      textContentType,
       activeColor
     } = this.props;
     
@@ -296,12 +295,14 @@ export default class ConfirmationCodeInput extends Component {
           selectionColor={activeColor}
           keyboardType={'name-phone-pad'}
           returnKeyType={'done'}
+          textContentType={textContentType}
           {...this.props}
           autoFocus={autoFocus && id === 0}
           onFocus={() => this._onFocus(id)}
           value={this.state.codeArr[id] ? this.state.codeArr[id].toString() : ''}
           onChangeText={text => this._onInputCode(text, id)}
           onKeyPress={(e) => this._onKeyPress(e)}
+          maxLength={(i === 0 && textContentType === 'oneTimeCode' ) ? undefined: 1}
         />
       )
     }
