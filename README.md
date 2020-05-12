@@ -21,14 +21,14 @@ A react-native confirmation code input for both IOS and Android
 ## Installation
 
 ```sh
-npm install react-native-confirmation-code-input --save
+yarn add @andreferi/react-native-confirmation-code-input --save
 ```
 
 ## Usage
 ### Basic
 Import this module:  
 ```javascript
-import CodeInput from 'react-native-confirmation-code-input';
+import CodeInput from '@andreferi/react-native-confirmation-code-input';
 ```
 Use as a component and style it:  
 ```javascript
