@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, TextInput, StyleSheet, Dimensions, ViewPropTypes, Clipboard } from 'react-native';
+import { View, TextInput, StyleSheet, ViewPropTypes, Clipboard } from 'react-native';
 import _ from 'lodash';
 
 // if ViewPropTypes is not defined fall back to View.propType (to support RN < 0.44)
@@ -208,19 +208,13 @@ export default class ConfirmationCodeInput extends Component {
     let newCodeArr = _.clone(this.state.codeArr);
     let isPasted = newCodeArr.includes(pastedArr[0])
     const { codeLength, onFulfill, compareWithCode, ignoreCase } = this.props;
-    console.warn('copiedContent ', pastedArr[0])
-    console.warn(isPasted)
     if (!isPasted && index == 0 && character.length > 1) {
-      console.warn('masuk on pasted')
-      console.warn('character : ', character)
-      console.warn('index : ', index)
       for (let i in pastedArr) {
         newCodeArr[i] = pastedArr[i]
       }
 
       if (copiedContent.length == codeLength) {
         const code = newCodeArr.join('');
-        console.warn('validated')
 
         if (compareWithCode) {
           const isMatching = this._isMatchingCode(code, compareWithCode, ignoreCase);
@@ -243,9 +237,8 @@ export default class ConfirmationCodeInput extends Component {
       const i = this.state.currentIndex
       newCodeArr[i] = character
 
-      if (i == codeLength-1) {
+      if (i == codeLength - 1) {
         const code = newCodeArr.join('');
-        console.warn('validated')
 
         if (compareWithCode) {
           const isMatching = this._isMatchingCode(code, compareWithCode, ignoreCase);
@@ -256,7 +249,7 @@ export default class ConfirmationCodeInput extends Component {
         }
         this._blur(i);
       } else {
-        this._setFocus(i+1)
+        this._setFocus(i + 1)
       }
 
       this.setState(prevState => ({
@@ -264,38 +257,7 @@ export default class ConfirmationCodeInput extends Component {
         currentIndex: prevState.currentIndex + 1,
         isPasted: true
       }))
-
-      // const i = pastedArr.length
-      // newCodeArr[i] = character
-
-      console.warn(newCodeArr)
-    }// } else {
-    //   console.warn('no pasted')
-    //   const i = this.state.isPasted ? this.state.currentIndex : index
-    //   newCodeArr[i] = character;
-
-    //   if (i == codeLength - 1) {
-    //     const code = newCodeArr.join('');
-
-    //     if (compareWithCode) {
-    //       const isMatching = this._isMatchingCode(code, compareWithCode, ignoreCase);
-    //       onFulfill(isMatching, code);
-    //       !isMatching && this.clear();
-    //     } else {
-    //       onFulfill(code);
-    //     }
-    //     this._blur(this.state.currentIndex);
-    //   } else {
-    //     this._setFocus(this.state.currentIndex + 1);
-    //   }
-
-    //   this.setState(prevState => {
-    //     return {
-    //       codeArr: newCodeArr,
-    //       currentIndex: prevState.currentIndex + 1
-    //     };
-    //   });
-    // }
+    }
   }
 
   render() {
@@ -306,9 +268,7 @@ export default class ConfirmationCodeInput extends Component {
       inputPosition,
       autoFocus,
       className,
-      size,
-      activeColor
-    } = this.props;
+      size    } = this.props;
 
     const initialCodeInputStyle = {
       width: size,

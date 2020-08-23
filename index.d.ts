@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactNative from "react-native";
 
-declare module "react-native-confirmation-code-input" {
+declare module "@andreferi/react-native-confirmation-code-input" {
 
     type InputPositions = 'left' | 'right' | 'center' | 'full-width';
     type ClassNames = 'border-box' | 'border-circle' | 'border-b' | 'border-b-t' | 'border-l-r';
