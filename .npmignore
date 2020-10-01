@@ -1,3 +1,4 @@
 .idea
 .npmignore
 example
+node_modules/
