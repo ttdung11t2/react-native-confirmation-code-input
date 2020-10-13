@@ -23,8 +23,8 @@
     "lodash.clone": "^4.5.0",
     "lodash.findindex": "^4.6.0",
     "lodash.indexof": "^4.0.5",
-    "lodash.merge": "^4.6.1",
-    "prop-types": "^15.5.10"
+    "lodash.merge": "^4.6.2",
+    "prop-types": "^15.7.2"
   },
   "homepage": "https://github.com/ttdung11t2/react-native-confirmation-code-input.git",
   "bugs": {
