@@ -240,6 +240,7 @@ export default class ConfirmationCodeInput extends Component {
       compareWithCode,
       ignoreCase,
       keyboardType,
+      onCodeChange,
     } = this.props;
 
     const characters = this._synthesizeInput(baseCharacters).substring(
