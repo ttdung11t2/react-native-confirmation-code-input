@@ -284,7 +284,11 @@ export default class ConfirmationCodeInput extends Component {
         codeArr: newCodeArr,
         currentIndex: index + 1,
       };
-    }, () => { onCodeChange(newCodeArr.join('')) });
+    }, () => {
+      if (onCodeChange) {
+        onCodeChange(newCodeArr.join(''))
+      }
+    });
   }
 
   render() {
