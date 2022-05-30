@@ -259,6 +259,7 @@ export default class ConfirmationCodeInput extends Component {
       const id = i;
       codeInputs.push(
         <TextInput
+          testID={`TEST_ID_OTP_INPUT${i}`}
           key={id}
           ref={ref => (this.codeInputRefs[id] = ref)}
           style={[
