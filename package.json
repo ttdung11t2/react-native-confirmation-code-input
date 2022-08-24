@@ -21,7 +21,8 @@
   ],
   "dependencies": {
     "lodash": "^4.17.4",
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.5.10",
+    "deprecated-react-native-prop-types": "^2.3.0"
   },
   "homepage": "https://github.com/ttdung11t2/react-native-confirmation-code-input.git",
   "bugs": {
